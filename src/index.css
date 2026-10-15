@@ -321,6 +321,8 @@ a { color: inherit; }
 }
 .work__caption span { display: block; color: var(--fg); }
 
+.category__empty { font-size: 12px; line-height: 18px; color: var(--muted); }
+
 /* Social Media: um cliente por linha, todos os posts em grade de 4 colunas (223px) */
 .clients-list { padding-top: 16px; }
 .client-row { padding: 0 0 40px; }

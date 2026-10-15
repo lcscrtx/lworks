@@ -55,6 +55,14 @@
 .adm-prefix { display: flex; align-items: baseline; gap: 2px; }
 .adm-prefix em { font-style: normal; color: var(--subtle); white-space: nowrap; }
 .adm-row { display: flex; gap: 20px; }
+.adm-types { border: 0; padding: 0; }
+.adm-types > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.adm-check {
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
+  background: #f2f2f2; border-radius: 4px; padding: 6px 10px; transition: background .2s;
+}
+.adm-check:has(input:checked) { background: var(--fg); color: var(--bg); }
+.adm-check input { margin: 0; accent-color: var(--fg); }
 
 /* Topo e avisos */
 .adm-top { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid #ececec; margin-bottom: 32px; }

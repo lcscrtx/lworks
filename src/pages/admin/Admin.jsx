@@ -151,7 +151,7 @@ export default function Admin() {
                   <span>
                     {category.layout === 'clients'
                       ? `${item.posts?.length || 0} posts`
-                      : [item.client, item.year].filter(Boolean).join(' · ') || '—'}
+                      : [item.types?.join(', '), item.client, item.year].filter(Boolean).join(' · ') || '—'}
                   </span>
                 </div>
                 <div className="adm-list__tools">

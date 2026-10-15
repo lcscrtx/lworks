@@ -8,6 +8,15 @@ import { categories as fallback } from '@/data/projects';
 */
 const ProjectsContext = createContext({ categories: fallback, loaded: false, reload: () => {} });
 
+// Categorias novas no código (ex.: WIP) entram também nos dados já publicados, vazias,
+// na mesma ordem do código. As configurações (nome, layout…) vêm sempre do código.
+function withAllCategories(saved) {
+  return fallback.map((base) => {
+    const found = saved.find((c) => c.id === base.id);
+    return found ? { ...found, label: base.label, singular: base.singular, layout: base.layout, tagged: base.tagged, caption: base.caption } : { ...base, items: [] };
+  });
+}
+
 export function ProjectsProvider({ children }) {
   const [state, setState] = useState({ categories: fallback, loaded: false, fromApi: false });
 
@@ -17,7 +26,7 @@ export function ProjectsProvider({ children }) {
       const data = res.ok ? await res.json() : null;
       setState(
         data?.categories
-          ? { categories: data.categories, loaded: true, fromApi: true }
+          ? { categories: withAllCategories(data.categories), loaded: true, fromApi: true }
           : { categories: fallback, loaded: true, fromApi: false }
       );
     } catch {

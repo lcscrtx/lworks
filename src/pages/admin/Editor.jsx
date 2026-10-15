@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { uploadFile, isVideo } from './api';
+import { WIP_TYPES } from '@/data/projects';
 
 /*
   Editor de um projeto.
@@ -126,6 +127,7 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
   const submit = (e) => {
     e.preventDefault();
     if (!draft.title?.trim()) return setError('Dê um nome ao projeto.');
+    if (category.tagged && !draft.types?.length) return setError('Marque pelo menos um tipo (Branding, Development…).');
 
     const { introText, toolsText, ...rest } = draft;
     const out = { ...rest, title: draft.title.trim() };
@@ -163,6 +165,30 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
           <span>{clients ? 'Nome do cliente' : 'Nome do projeto'}</span>
           <input value={draft.title || ''} onChange={(e) => set({ title: e.target.value })} required />
         </label>
+
+        {category.tagged && (
+          <fieldset className="adm-field adm-types">
+            <span>O que é este trabalho?</span>
+            <div>
+              {WIP_TYPES.map((type) => (
+                <label key={type} className="adm-check">
+                  <input
+                    type="checkbox"
+                    checked={(draft.types || []).includes(type)}
+                    onChange={(e) =>
+                      set({
+                        types: e.target.checked
+                          ? WIP_TYPES.filter((t) => t === type || (draft.types || []).includes(t))
+                          : (draft.types || []).filter((t) => t !== type)
+                      })
+                    }
+                  />
+                  {type}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
 
         {!clients && (
           <>

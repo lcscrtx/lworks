@@ -5,6 +5,7 @@ import { useImageRatios, ratioOf, mediaSrcs } from '@/lib/useImageRatios';
 import { useTitle } from '@/lib/useTitle';
 import Footer from '@/components/Footer';
 import Lightbox from '@/components/Lightbox';
+import { captionOf } from '@/data/projects';
 
 // '\n' dentro de um parágrafo vira quebra de linha
 const Lines = ({ text }) =>
@@ -31,7 +32,7 @@ export default function Project() {
     [...gallery.flatMap(mediaSrcs), prev?.src, next?.src].filter(Boolean)
   );
 
-  useTitle(project && `${project.title} — ${category.singular}`);
+  useTitle(project && `${project.title} — ${captionOf(category, project)}`);
   useEffect(() => { window.scrollTo(0, 0); setOpen(null); }, [id, slug]);
 
   if (!project) return <Navigate to={category ? `/projects/${id}` : '/'} replace />;
@@ -55,7 +56,7 @@ export default function Project() {
           </div>
 
           <dl className="project__meta reveal" style={delay()}>
-            <dd>{category.singular}</dd>
+            <dd>{captionOf(category, project)}</dd>
             {project.client && <div><dt>Cliente, </dt><dd className="ink">{project.client}</dd></div>}
             {project.year && <div><dt>Ano, </dt><dd className="ink">{project.year}</dd></div>}
 

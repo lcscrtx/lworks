@@ -3,6 +3,7 @@ import { useCategories } from '@/lib/projectsStore';
 import Footer from '@/components/Footer';
 import Masonry from '@/components/Masonry';
 import { useTitle } from '@/lib/useTitle';
+import { captionOf } from '@/data/projects';
 
 /*
   Todos os projetos juntos, intercalando as categorias
@@ -13,7 +14,7 @@ function mixAll(categories) {
     c.items.map((item) => ({
       ...item,
       key: `${c.id}-${item.slug || item.title}`,
-      caption: c.singular,
+      caption: captionOf(c, item),
       // Social Media não tem página interna: o card leva para a página da categoria
       href: item.slug ? `/projects/${c.id}/${item.slug}` : `/projects/${c.id}`,
       ratio: item.ratio ?? item.posts?.[0]?.ratio,

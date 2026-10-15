@@ -115,5 +115,20 @@ export const categories = [
       { title: 'Cliente do Projeto 02', slug: 'projeto-02', ratio: 304 / 214, ...SAMPLE_UI },
       { title: 'Cliente do Projeto 03', slug: 'projeto-03', ratio: 304 / 214, ...SAMPLE_UI }
     ]
+  },
+  {
+    // Trabalhos em andamento. Cada item marca seus tipos em `types` (ex.: ['Branding', 'UI/UX Design'])
+    id: 'wip',
+    label: 'WIP',
+    singular: 'WIP',
+    tagged: true,
+    items: []
   }
 ];
+
+// Tipos que um WIP pode ter (checkboxes no painel)
+export const WIP_TYPES = ['Branding', 'Development', 'Social Media', 'UI/UX Design'];
+
+// Legenda cinza de um item: "WIP · Branding, UI/UX Design" ou o nome da categoria
+export const captionOf = (category, item) =>
+  category.tagged && item.types?.length ? `${category.singular} · ${item.types.join(', ')}` : category.singular;
