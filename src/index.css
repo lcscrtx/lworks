@@ -433,7 +433,8 @@ a { color: inherit; }
   overflow: hidden;
   cursor: default;
 }
-.lightbox__media img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.lightbox__media img,
+.lightbox__media video { width: 100%; height: 100%; object-fit: contain; display: block; }
 .lightbox__bar {
   display: flex;
   gap: 24px;

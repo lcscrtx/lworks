@@ -32,7 +32,11 @@ export default function Lightbox({ images, index, onChange, onClose }) {
         style={{ aspectRatio: img.ratio }}
         onClick={(e) => e.stopPropagation()}
       >
-        {img.src && <img src={img.src} alt={img.alt || ''} />}
+        {img.video ? (
+          <video key={img.video} src={img.video} poster={img.src} autoPlay muted loop playsInline controls />
+        ) : (
+          img.src && <img src={img.src} alt={img.alt || ''} />
+        )}
       </div>
 
       <div className="lightbox__bar" onClick={(e) => e.stopPropagation()}>

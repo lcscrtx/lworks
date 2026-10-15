@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useCategories } from '@/lib/projectsStore';
-import { useImageRatios, ratioOf } from '@/lib/useImageRatios';
+import { useImageRatios, ratioOf, mediaSrcs } from '@/lib/useImageRatios';
 import { useTitle } from '@/lib/useTitle';
 import Footer from '@/components/Footer';
 import Lightbox from '@/components/Lightbox';
@@ -28,7 +28,7 @@ export default function Project() {
   // Sites ao vivo (embed) não entram na tela cheia
   const gallery = (project?.blocks || []).flatMap((b) => (b.type === 'images' ? b.items.filter((i) => !i.embed) : []));
   const ratios = useImageRatios(
-    [...gallery.map((i) => i.src), prev?.src, next?.src].filter(Boolean)
+    [...gallery.flatMap(mediaSrcs), prev?.src, next?.src].filter(Boolean)
   );
 
   useTitle(project && `${project.title} — ${category.singular}`);

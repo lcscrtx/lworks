@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useImageRatios, ratioOf } from '@/lib/useImageRatios';
+import { useImageRatios, ratioOf, mediaSrcs } from '@/lib/useImageRatios';
 import Lightbox from '@/components/Lightbox';
 
 /*
@@ -9,7 +9,7 @@ import Lightbox from '@/components/Lightbox';
 */
 export default function ClientGroups({ category }) {
   const posts = category.items.flatMap((c) => c.posts || []);
-  const ratios = useImageRatios(posts.map((p) => p.src).filter(Boolean));
+  const ratios = useImageRatios(posts.flatMap(mediaSrcs));
   const [open, setOpen] = useState(null); // { client, index }
 
   const openClient = open && category.items[open.client];
