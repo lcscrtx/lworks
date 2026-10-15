@@ -3,8 +3,9 @@ import { useImageRatios, ratioOf, mediaSrcs } from '@/lib/useImageRatios';
 import Lightbox from '@/components/Lightbox';
 
 /*
-  Layout por cliente (Figma: Social Media).
-  Cada cliente: legenda + grade 2×2 de posts. Clientes em 2 colunas.
+  Social Media: um cliente por linha.
+  Legenda em cima e todos os posts em grade de 4 colunas (223px),
+  continuando na linha de baixo quando passa de 4. Divisor entre clientes.
   Clicar num post abre os posts daquele cliente em tela cheia.
 */
 export default function ClientGroups({ category }) {
@@ -16,14 +17,14 @@ export default function ClientGroups({ category }) {
 
   return (
     <>
-      <div className="clients-grid">
+      <div className="clients-list">
         {category.items.map((client, c) => (
-          <section className="client-group work" style={{ '--delay': `${0.25 + c * 0.08}s` }} key={client.title}>
-            <p className="work__caption client-group__caption">
+          <section className="client-row work" style={{ '--delay': `${0.25 + c * 0.08}s` }} key={client.title}>
+            <p className="work__caption client-row__caption">
               {category.caption || 'Cliente'}
               <span>{client.title}</span>
             </p>
-            <div className="client-group__posts">
+            <div className="client-row__grid">
               {(client.posts || []).map((post, i) => (
                 <button
                   type="button"

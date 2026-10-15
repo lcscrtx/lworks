@@ -321,16 +321,12 @@ a { color: inherit; }
 }
 .work__caption span { display: block; color: var(--fg); }
 
-/* Social Media: clientes em 2 colunas, cada um com grade 2×2 de posts (223×278) */
-.clients-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  align-items: start;
-  padding-top: 16px; /* legenda em y=224 (padding: a margem se juntaria à do título) */
-}
-.client-group__caption { margin: 0 0 12px; }
-.client-group__posts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+/* Social Media: um cliente por linha, todos os posts em grade de 4 colunas (223px) */
+.clients-list { padding-top: 16px; }
+.client-row { padding: 0 0 40px; }
+.client-row + .client-row { padding-top: 32px; border-top: 1px solid #e3e3e3; }
+.client-row__caption { margin: 0 0 12px; }
+.client-row__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: start; }
 .client-group__post {
   display: block; width: 100%; padding: 0; border: 0; font: inherit;
   background: #d9d9d9; border-radius: 4px; overflow: hidden; cursor: zoom-in;
@@ -339,7 +335,7 @@ a { color: inherit; }
 .client-group__post:hover { opacity: .85; }
 .client-group__post img,
 .client-group__post video { width: 100%; height: 100%; object-fit: cover; display: block; }
-@media (max-width: 760px) { .clients-grid { grid-template-columns: 1fr; gap: 40px; } }
+@media (max-width: 760px) { .client-row__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
 
 .work { display: block; text-decoration: none; }
 .work__media { transition: opacity .3s; }
