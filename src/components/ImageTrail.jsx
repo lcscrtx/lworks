@@ -17,8 +17,8 @@ const PLACEHOLDERS = [
   { ratio: 3 / 2 }
 ];
 
-// Elementos que interrompem a trilha
-const BLOCKERS = 'a, button, .header, .intro, .projects, .site-footer';
+// Elementos que interrompem a trilha (.home__side: coluna de Projects e Tessela, inclusive o espaço entre eles)
+const BLOCKERS = 'a, button, .header, .intro, .home__side, .projects, .tessela-callout, .site-footer';
 
 const SPACING = 220;  // distância do mouse (px) entre uma imagem e outra
 const MAX_VISIBLE = 3; // máximo de imagens na tela ao mesmo tempo
