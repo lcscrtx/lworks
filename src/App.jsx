@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { ProjectsProvider } from '@/lib/projectsStore';
+import { PagesProvider } from '@/lib/pagesStore';
 import Header from '@/components/Header';
 import Home from '@/pages/Home';
 import Category from '@/pages/Category';
@@ -24,19 +25,21 @@ export default function App() {
   return (
     <BrowserRouter>
       <ProjectsProvider>
-        <Routes>
-          <Route path="/admin/*" element={<Suspense fallback={null}><Admin /></Suspense>} />
-          <Route element={<SiteLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/works" element={<Works />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/playground" element={<Playground />} />
-            <Route path="/projects/:id" element={<Category />} />
-            <Route path="/projects/:id/:slug" element={<Project />} />
-            <Route path="*" element={<Home />} />
-          </Route>
-        </Routes>
+        <PagesProvider>
+          <Routes>
+            <Route path="/admin/*" element={<Suspense fallback={null}><Admin /></Suspense>} />
+            <Route element={<SiteLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/works" element={<Works />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/playground" element={<Playground />} />
+              <Route path="/projects/:id" element={<Category />} />
+              <Route path="/projects/:id/:slug" element={<Project />} />
+              <Route path="*" element={<Home />} />
+            </Route>
+          </Routes>
+        </PagesProvider>
       </ProjectsProvider>
     </BrowserRouter>
   );

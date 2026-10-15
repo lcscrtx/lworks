@@ -55,3 +55,7 @@ export async function uploadFile(file, storage) {
 }
 
 export const isVideo = (url = '') => /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url);
+
+// Textos e imagens das páginas About e Contact
+export const savePages = (pages) =>
+  request('/api/pages', { method: 'PUT', body: JSON.stringify(pages) });

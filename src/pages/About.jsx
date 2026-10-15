@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-import { about, experience, clients } from '@/data/about';
+import { usePages } from '@/lib/pagesStore';
 import { useTitle } from '@/lib/useTitle';
 import Footer from '@/components/Footer';
 
 export default function About() {
   useTitle('About');
+  const about = usePages().pages.about;
+  const { experience = [], clients = [] } = about;
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   let step = 0; // ordem da animação de entrada
@@ -16,25 +18,25 @@ export default function About() {
         <section className="about__intro">
           <h1 className="about__title reveal" style={delay()}>About me</h1>
           <div className="about__bio reveal" style={delay()}>
-            {about.bio.map((p, i) => <p key={i}>{p}</p>)}
+            {(about.bio || []).map((p, i) => <p key={i}>{p}</p>)}
           </div>
           <figure className="about__photo reveal" style={delay()}>
-            <img src={about.photo} alt="Foto de Lucas Cartaxo" width="304" height="304" />
-            <figcaption>{about.caption}</figcaption>
+            {about.photo && <img src={about.photo} alt="Foto de Lucas Cartaxo" width="304" height="304" />}
+            {about.caption && <figcaption>{about.caption}</figcaption>}
           </figure>
         </section>
 
         <section className="about__section">
           <h2 className="about__title reveal" style={delay()}>Work Experience</h2>
           <ul className="experience">
-            {experience.map((job) => (
-              <li className="job reveal" style={delay()} key={job.company + job.role}>
+            {experience.map((job, i) => (
+              <li className="job reveal" style={delay()} key={`${job.company}-${job.role}-${i}`}>
                 <div className="job__head">
                   <div className="job__logo">{job.logo && <img src={job.logo} alt="" />}</div>
                   <p>
                     <span className="ink">{job.company}</span>
                     <br />
-                    {job.role} · {job.period}
+                    {[job.role, job.period].filter(Boolean).join(' · ')}
                   </p>
                 </div>
                 <div className="job__desc">
@@ -48,8 +50,8 @@ export default function About() {
         <section className="about__section">
           <h2 className="about__title reveal" style={delay()}>Clients</h2>
           <ul className="clients">
-            {clients.map((c) => (
-              <li className="client reveal" style={delay()} key={c.name} title={c.name}>
+            {clients.map((c, i) => (
+              <li className="client reveal" style={delay()} key={`${c.name}-${i}`} title={c.name}>
                 {c.logo ? <img src={c.logo} alt={c.name} /> : <span className="sr-only">{c.name}</span>}
               </li>
             ))}

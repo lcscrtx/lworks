@@ -14,10 +14,10 @@ const slugify = (text) =>
     .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'projeto';
 
 // Parágrafos ↔ texto com linha em branco entre eles
-const toText = (paragraphs = []) => paragraphs.join('\n\n');
-const toParagraphs = (text) => text.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+export const toText = (paragraphs = []) => paragraphs.join('\n\n');
+export const toParagraphs = (text) => text.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 
-const move = (list, from, to) => {
+export const move = (list, from, to) => {
   if (to < 0 || to >= list.length) return list;
   const copy = [...list];
   copy.splice(to, 0, copy.splice(from, 1)[0]);
@@ -27,7 +27,7 @@ const move = (list, from, to) => {
 // Um arquivo (imagem/vídeo) vira um item de mídia
 const mediaFromUrl = (url) => (isVideo(url) ? { video: url } : { src: url });
 
-function Media({ item, className = '' }) {
+export function Media({ item, className = '' }) {
   if (item.embed) {
     return (
       <div className={`adm-thumb adm-thumb--site ${className}`}>
@@ -44,7 +44,7 @@ function Media({ item, className = '' }) {
   );
 }
 
-function UploadButton({ label, multiple, onFiles, storage, accept = 'image/*,video/*' }) {
+export function UploadButton({ label, multiple, onFiles, storage, accept = 'image/*,video/*' }) {
   const input = useRef(null);
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');

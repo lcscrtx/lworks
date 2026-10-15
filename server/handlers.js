@@ -1,5 +1,5 @@
 import { checkPassword, createToken, verifyToken, tokenFrom } from './auth.js';
-import { mode, readProjects, writeProjects, saveLocalFile } from './storage.js';
+import { mode, readProjects, writeProjects, readPages, writePages, saveLocalFile } from './storage.js';
 
 /*
   Handlers da API, escritos com Node puro para rodar igual
@@ -66,6 +66,31 @@ export async function projects(req, res) {
       if (!Array.isArray(categories)) return send(res, 400, { error: 'Dados inválidos' });
       const data = { categories, updatedAt: new Date().toISOString() };
       await writeProjects(data);
+      return send(res, 200, { ok: true, updatedAt: data.updatedAt });
+    }
+    send(res, 405, { error: 'Método não permitido' });
+  } catch (err) {
+    console.error(err);
+    send(res, 500, { error: 'Erro ao acessar os dados' });
+  }
+}
+
+// GET /api/pages → { about, contact } (null enquanto nada foi publicado)
+// PUT /api/pages { about, contact } (precisa estar logado)
+export async function pages(req, res) {
+  try {
+    if (req.method === 'GET') {
+      const data = await readPages();
+      return send(res, 200, { about: data?.about ?? null, contact: data?.contact ?? null, updatedAt: data?.updatedAt ?? null });
+    }
+    if (req.method === 'PUT') {
+      if (!isAuthed(req)) return send(res, 401, { error: 'Sessão expirada. Entre de novo.' });
+      const { about, contact } = await readJson(req);
+      if (!about || typeof about !== 'object' || !contact || typeof contact !== 'object') {
+        return send(res, 400, { error: 'Dados inválidos' });
+      }
+      const data = { about, contact, updatedAt: new Date().toISOString() };
+      await writePages(data);
       return send(res, 200, { ok: true, updatedAt: data.updatedAt });
     }
     send(res, 405, { error: 'Método não permitido' });

@@ -9,30 +9,32 @@ import crypto from 'node:crypto';
 */
 export const mode = () => (process.env.BLOB_READ_WRITE_TOKEN ? 'blob' : 'local');
 
-const DATA_PATH = 'data/projects.json';
-const LOCAL_DATA = path.resolve('.data/projects.json');
 const LOCAL_UPLOADS = path.resolve('public/uploads');
 
-export async function readProjects() {
+// Cada conjunto de dados é um JSON: data/<nome>.json (Blob) ou .data/<nome>.json (local)
+const blobPath = (name) => `data/${name}.json`;
+const localPath = (name) => path.resolve(`.data/${name}.json`);
+
+async function readData(name) {
   if (mode() === 'blob') {
     const { list } = await import('@vercel/blob');
-    const { blobs } = await list({ prefix: DATA_PATH, limit: 1 });
+    const { blobs } = await list({ prefix: blobPath(name), limit: 1 });
     if (!blobs.length) return null;
     const res = await fetch(`${blobs[0].url}?v=${Date.now()}`, { cache: 'no-store' });
     return res.ok ? res.json() : null;
   }
   try {
-    return JSON.parse(await fs.readFile(LOCAL_DATA, 'utf8'));
+    return JSON.parse(await fs.readFile(localPath(name), 'utf8'));
   } catch {
     return null;
   }
 }
 
-export async function writeProjects(data) {
+async function writeData(name, data) {
   const json = JSON.stringify(data, null, 2);
   if (mode() === 'blob') {
     const { put } = await import('@vercel/blob');
-    await put(DATA_PATH, json, {
+    await put(blobPath(name), json, {
       access: 'public',
       contentType: 'application/json',
       addRandomSuffix: false,
@@ -41,9 +43,16 @@ export async function writeProjects(data) {
     });
     return;
   }
-  await fs.mkdir(path.dirname(LOCAL_DATA), { recursive: true });
-  await fs.writeFile(LOCAL_DATA, json);
+  await fs.mkdir(path.dirname(localPath(name)), { recursive: true });
+  await fs.writeFile(localPath(name), json);
 }
+
+export const readProjects = () => readData('projects');
+export const writeProjects = (data) => writeData('projects', data);
+
+// Textos e imagens das páginas About e Contact
+export const readPages = () => readData('pages');
+export const writePages = (data) => writeData('pages', data);
 
 // Upload local (só no computador). Na Vercel o navegador envia direto para o Blob.
 export async function saveLocalFile(name, buffer) {

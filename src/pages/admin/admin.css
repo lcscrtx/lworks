@@ -70,6 +70,15 @@
 .adm-notice { background: #f6f6f6; border-radius: 4px; padding: 10px 12px; margin-bottom: 12px; }
 .adm-notice--muted { background: none; padding: 0; color: var(--muted); margin-bottom: 32px; }
 
+/* Abas: Projetos · About · Contact */
+.adm-tabs { display: flex; gap: 4px; margin-bottom: 24px; }
+.adm-tabs button {
+  font: inherit; color: var(--muted); background: none; border: 0; border-radius: 4px;
+  padding: 6px 12px; cursor: pointer; transition: background .2s, color .2s;
+}
+.adm-tabs button:hover { color: var(--fg); }
+.adm-tabs button.is-active { background: var(--fg); color: var(--bg); }
+
 /* Lista por categoria */
 .adm-cat { padding: 24px 0 32px; border-top: 1px solid #e3e3e3; }
 .adm-cat__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
@@ -103,6 +112,7 @@
 .adm-card { border: 1px solid #ececec; border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
 .adm-cover { display: flex; gap: 20px; align-items: flex-start; }
 .adm-cover__img { width: 160px; aspect-ratio: 4 / 3; flex-shrink: 0; }
+.adm-cover__img--square { width: 96px; aspect-ratio: 1; }
 .adm-cover > div:last-child { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
 
 .adm-upload {

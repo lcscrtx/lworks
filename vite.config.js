@@ -23,7 +23,7 @@ function localApi() {
       });
 
       server.middlewares.use(async (req, res, next) => {
-        const route = req.url.split('?')[0].match(/^\/api\/(login|projects|upload)$/)?.[1];
+        const route = req.url.split('?')[0].match(/^\/api\/(login|projects|pages|upload)$/)?.[1];
         if (!route) return next();
         const handlers = await server.ssrLoadModule('/server/handlers.js');
         handlers[route](req, res);
