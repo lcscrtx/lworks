@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useImageRatios, ratioOf } from '@/lib/useImageRatios';
+import { useImageRatios, ratioOf, mediaSrcs } from '@/lib/useImageRatios';
 
 // Quantidade de colunas conforme a largura da tela
 function useColumns() {
@@ -20,7 +20,7 @@ function useColumns() {
 */
 export default function Masonry({ items }) {
   const cols = useColumns();
-  const ratios = useImageRatios(items.map((i) => i.src).filter(Boolean));
+  const ratios = useImageRatios(items.flatMap(mediaSrcs));
 
   // Cada item entra na coluna mais baixa até o momento
   const columns = Array.from({ length: cols }, () => ({ height: 0, items: [] }));
@@ -35,22 +35,34 @@ export default function Masonry({ items }) {
     <div className="masonry">
       {columns.map((col, c) => (
         <div className="masonry__col" key={c}>
-          {col.items.map((item, i) => (
-            <Link
-              to={item.href || '#'}
-              className="work"
-              key={item.key || item.title}
-              style={{ '--delay': `${0.25 + Math.min(i * cols + c, 12) * 0.08}s` }}
-            >
-              <div className="work__media" style={{ aspectRatio: item.ratio }}>
-                {item.src && <img src={item.src} alt={item.title} loading="lazy" />}
-              </div>
-              <p className="work__caption">
-                {item.caption}
-                <span>{item.title}</span>
-              </p>
-            </Link>
-          ))}
+          {col.items.map((item, i) => {
+            const style = { '--delay': `${0.25 + Math.min(i * cols + c, 12) * 0.08}s` };
+            const body = (
+              <>
+                <div className="work__media" style={{ aspectRatio: item.ratio }}>
+                  {item.video ? (
+                    <video src={item.video} poster={item.src} autoPlay muted loop playsInline />
+                  ) : (
+                    item.src && <img src={item.src} alt={item.title} loading="lazy" />
+                  )}
+                </div>
+                <p className="work__caption">
+                  {item.caption}
+                  <span>{item.title}</span>
+                </p>
+              </>
+            );
+            // Sem página interna (ex.: WIP): o card abre a tela cheia
+            return item.onClick ? (
+              <button type="button" className="work work--zoom" key={item.key || item.title} style={style} onClick={item.onClick}>
+                {body}
+              </button>
+            ) : (
+              <Link to={item.href || '#'} className="work" key={item.key || item.title} style={style}>
+                {body}
+              </Link>
+            );
+          })}
         </div>
       ))}
     </div>

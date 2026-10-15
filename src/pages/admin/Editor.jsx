@@ -6,6 +6,7 @@ import { WIP_TYPES } from '@/data/projects';
   Editor de um projeto.
   - Categorias normais: capa, ficha técnica, textos e blocos (galerias e textos)
   - Social Media (layout 'clients'): nome do cliente e posts
+  - WIP (layout 'gallery'): nome, tipos e imagens — sem página interna
 */
 
 const slugify = (text) =>
@@ -114,6 +115,8 @@ function MediaGrid({ items, onChange, allowFull }) {
 
 export default function Editor({ category, item, isNew, storage, onSave, onCancel, saving, takenSlugs }) {
   const clients = category.layout === 'clients';
+  const gallery = category.layout === 'gallery';
+  const simple = clients || gallery; // sem página interna: só nome e imagens
   const [draft, setDraft] = useState(() => ({
     ...item,
     introText: toText(item.intro),
@@ -132,7 +135,7 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
     const { introText, toolsText, ...rest } = draft;
     const out = { ...rest, title: draft.title.trim() };
 
-    if (clients) {
+    if (simple) {
       delete out.slug;
     } else {
       let slug = slugify(draft.slug || draft.title);
@@ -162,7 +165,7 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
       <section className="adm-card">
         <h2>{clients ? 'Cliente' : 'Informações'}</h2>
         <label className="adm-field">
-          <span>{clients ? 'Nome do cliente' : 'Nome do projeto'}</span>
+          <span>{clients ? 'Nome do cliente' : gallery ? 'Nome do trabalho' : 'Nome do projeto'}</span>
           <input value={draft.title || ''} onChange={(e) => set({ title: e.target.value })} required />
         </label>
 
@@ -190,7 +193,7 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
           </fieldset>
         )}
 
-        {!clients && (
+        {!simple && (
           <>
             <label className="adm-field">
               <span>Endereço da página</span>
@@ -244,7 +247,7 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
         )}
       </section>
 
-      {!clients && (
+      {!simple && (
         <section className="adm-card">
           <h2>Capa</h2>
           <p className="adm-hint">Aparece na grade, no preview da home, no footer e no Playground.</p>
@@ -267,7 +270,7 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
         </section>
       )}
 
-      {!clients && (
+      {!simple && (
         <section className="adm-card">
           <h2>Texto de apresentação</h2>
           <p className="adm-hint">Deixe uma linha em branco entre os parágrafos.</p>
@@ -280,13 +283,17 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
         </section>
       )}
 
-      {clients ? (
+      {simple ? (
         <section className="adm-card">
-          <h2>Posts</h2>
-          <p className="adm-hint">Imagens ou vídeos (reels). Aparecem em grade 2×2 na ordem abaixo.</p>
+          <h2>{clients ? 'Posts' : 'Imagens'}</h2>
+          <p className="adm-hint">
+            {clients
+              ? 'Imagens ou vídeos (reels), na ordem abaixo.'
+              : 'Imagens ou vídeos do trabalho. A primeira é a capa; o clique no card abre todas em tela cheia.'}
+          </p>
           <MediaGrid items={draft.posts || []} onChange={(posts) => set({ posts })} />
           <UploadButton
-            label="+ Adicionar posts"
+            label={clients ? '+ Adicionar posts' : '+ Adicionar imagens ou vídeos'}
             multiple
             storage={storage}
             onFiles={(urls) => set({ posts: [...(draft.posts || []), ...urls.map(mediaFromUrl)] })}

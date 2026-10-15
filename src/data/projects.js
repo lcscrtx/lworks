@@ -117,11 +117,14 @@ export const categories = [
     ]
   },
   {
-    // Trabalhos em andamento. Cada item marca seus tipos em `types` (ex.: ['Branding', 'UI/UX Design'])
+    // Trabalhos em andamento, sem página interna: o card abre as imagens em tela cheia.
+    // Item: { title, types: ['Branding', 'UI/UX Design'], posts: [{ src } | { video }] }
     id: 'wip',
     label: 'WIP',
+    title: 'Work in Progress',
     singular: 'WIP',
     tagged: true,
+    layout: 'gallery',
     items: []
   }
 ];
