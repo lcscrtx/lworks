@@ -26,6 +26,14 @@ const move = (list, from, to) => {
 const mediaFromUrl = (url) => (isVideo(url) ? { video: url } : { src: url });
 
 function Media({ item, className = '' }) {
+  if (item.embed) {
+    return (
+      <div className={`adm-thumb adm-thumb--site ${className}`}>
+        <span>Site ao vivo</span>
+        <small>{item.embed.replace(/^https?:\/\/(www\.)?/, '')}</small>
+      </div>
+    );
+  }
   const url = item.video || item.src;
   return (
     <div className={`adm-thumb ${className}`} style={{ aspectRatio: item.ratio || undefined }}>
@@ -300,6 +308,19 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
                       setBlocks(blocks.map((x, j) => (j === b ? { ...x, items: [...x.items, ...urls.map(mediaFromUrl)] } : x)))
                     }
                   />
+                  <button
+                    type="button"
+                    className="adm-btn adm-btn--self"
+                    onClick={() => {
+                      let url = window.prompt('Endereço do site (ex.: https://meusite.com.br)')?.trim();
+                      if (!url) return;
+                      if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
+                      const site = { embed: url, full: true, ratio: 952 / 615 };
+                      setBlocks(blocks.map((x, j) => (j === b ? { ...x, items: [...x.items, site] } : x)));
+                    }}
+                  >
+                    + Site ao vivo
+                  </button>
                 </>
               )}
             </div>

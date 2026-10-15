@@ -25,7 +25,8 @@ export default function Project() {
   const [open, setOpen] = useState(null); // índice da imagem aberta em tela cheia
 
   // Todas as imagens da galeria, em ordem (para a tela cheia)
-  const gallery = (project?.blocks || []).flatMap((b) => (b.type === 'images' ? b.items : []));
+  // Sites ao vivo (embed) não entram na tela cheia
+  const gallery = (project?.blocks || []).flatMap((b) => (b.type === 'images' ? b.items.filter((i) => !i.embed) : []));
   const ratios = useImageRatios(
     [...gallery.map((i) => i.src), prev?.src, next?.src].filter(Boolean)
   );
@@ -86,6 +87,28 @@ export default function Project() {
           ) : (
             <div className={`project__gallery${block.items.every((i) => i.full) ? ' is-stack' : ''}`} key={b}>
               {block.items.map((img, i) => {
+                // Site ao vivo: o site real dentro de uma moldura de navegador
+                if (img.embed) {
+                  return (
+                    <div
+                      className={`project__media project__site reveal${img.full ? ' is-full' : ''}`}
+                      style={{ ...delay(), aspectRatio: img.ratio || 952 / 615 }}
+                      key={i}
+                    >
+                      <div className="site-bar">
+                        <span className="site-bar__dots" aria-hidden="true"><i /><i /><i /></span>
+                        <span className="site-bar__url">{img.embed.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}</span>
+                        <a href={img.embed} target="_blank" rel="noopener">Abrir ↗</a>
+                      </div>
+                      <iframe
+                        src={img.embed}
+                        title={`Site — ${project.title}`}
+                        loading="lazy"
+                        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                      />
+                    </div>
+                  );
+                }
                 const index = g++;
                 return (
                   <button

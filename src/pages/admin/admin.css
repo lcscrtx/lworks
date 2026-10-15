@@ -81,6 +81,12 @@
 .adm-empty { color: var(--muted); }
 
 .adm-thumb { background: #e6e6e6; border-radius: 4px; overflow: hidden; }
+.adm-thumb--site {
+  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
+  padding: 8px; text-align: center; background: #f2f2f2; border: 1px solid #e3e3e3;
+}
+.adm-thumb--site small { color: var(--muted); word-break: break-all; }
+.adm-btn--self { align-self: flex-start; }
 .adm-thumb img, .adm-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* Editor */
