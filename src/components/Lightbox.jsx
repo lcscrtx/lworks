@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 /*
   Visualizador em tela cheia.
-  Fecha com Esc ou clique fora; navega com ← → ou pelos botões.
+  Fecha com Esc ou clique fora; navega com ← →, pelos botões ou deslizando o dedo.
 */
 export default function Lightbox({ images, index, onChange, onClose }) {
   const total = images.length;
@@ -25,8 +25,27 @@ export default function Lightbox({ images, index, onChange, onClose }) {
 
   const img = images[index];
 
+  // Celular: deslizar o dedo para os lados troca a imagem
+  const swipe = useRef(null);
+  const onTouchStart = (e) => { swipe.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; };
+  const onTouchEnd = (e) => {
+    if (!swipe.current) return;
+    const dx = e.changedTouches[0].clientX - swipe.current.x;
+    const dy = e.changedTouches[0].clientY - swipe.current.y;
+    swipe.current = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) && total > 1) go(dx < 0 ? 1 : -1);
+  };
+
   return createPortal(
-    <div className="lightbox" role="dialog" aria-modal="true" aria-label="Imagem em tela cheia" onClick={onClose}>
+    <div
+      className="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Imagem em tela cheia"
+      onClick={onClose}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
       <div
         className="lightbox__media"
         style={{ aspectRatio: img.ratio }}

@@ -1,16 +1,46 @@
-import { Link, NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+
+const LINKS = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/works', label: 'Works' },
+  { to: '/playground', label: 'Playground' },
+  { to: '/about', label: 'About' },
+  { to: '/contact', label: 'Contact' }
+];
 
 export default function Header() {
+  const [open, setOpen] = useState(false); // menu do celular
+  const { pathname } = useLocation();
+
+  // Fecha o menu ao trocar de página e trava a rolagem enquanto ele está aberto
+  useEffect(() => { setOpen(false); }, [pathname]);
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    const onKey = (e) => e.key === 'Escape' && setOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   return (
-    <header className="container header">
+    <header className={`container header${open ? ' is-open' : ''}`}>
       <Link to="/" className="brand">Lucas Cartaxo <span>LWORKS®</span></Link>
-      <nav>
+
+      <button
+        type="button"
+        className="menu-toggle"
+        aria-expanded={open}
+        aria-controls="site-menu"
+        onClick={() => setOpen((o) => !o)}
+      >
+        {open ? 'Fechar' : 'Menu'}
+      </button>
+
+      <nav id="site-menu" className="site-menu">
         <ul className="nav">
-          <li><NavLink to="/" end>Home</NavLink></li>
-          <li><NavLink to="/works">Works</NavLink></li>
-          <li><NavLink to="/playground">Playground</NavLink></li>
-          <li><NavLink to="/about">About</NavLink></li>
-          <li><NavLink to="/contact">Contact</NavLink></li>
+          {LINKS.map((l) => (
+            <li key={l.to}><NavLink to={l.to} end={l.end}>{l.label}</NavLink></li>
+          ))}
         </ul>
       </nav>
     </header>

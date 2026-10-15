@@ -11,7 +11,8 @@ const { Engine, Runner, Bodies, Body, Composite, Mouse, MouseConstraint, Events 
 const SHADES = ['#d9d9d9', '#cfcfcf', '#e3e3e3', '#c7c7c7'];
 const DROP_EVERY = 110; // ms entre uma imagem e outra caindo
 const WALL = 200; // espessura das paredes invisíveis
-const MAX_ITEMS = 40; // limite de objetos na tela (desempenho)
+// limite de objetos na tela (desempenho; menos no celular, que tem pouco espaço)
+const MAX_ITEMS = typeof window !== 'undefined' && window.innerWidth < 600 ? 18 : 40;
 
 export default function Playground() {
   useTitle('Playground');

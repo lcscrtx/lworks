@@ -616,11 +616,101 @@ a { color: inherit; }
   .intro p, .scribble { animation: none; opacity: 1; transform: none; filter: none; clip-path: none; }
 }
 
+/* Botão "Menu" só existe no celular */
+.menu-toggle { display: none; }
+
 @media (max-width: 600px) {
-  .header { flex-direction: column; align-items: flex-start; gap: 8px; }
   main.home { flex-direction: column; gap: 48px; padding-top: 56px; }
+
+  /* Header em uma linha: nome + "Menu", que abre o menu em tela cheia */
+  .brand, .menu-toggle { position: relative; z-index: 2; }
+  .menu-toggle {
+    display: block;
+    font: inherit;
+    color: var(--fg);
+    background: none;
+    border: 0;
+    padding: 12px 0 12px 16px; /* área de toque maior */
+    margin: -12px 0;
+    cursor: pointer;
+  }
+  .site-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: var(--bg);
+    padding: 96px var(--gutter) 32px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s ease, visibility .25s;
+  }
+  .header.is-open .site-menu { opacity: 1; visibility: visible; }
+  .site-menu .nav { flex-direction: column; gap: 4px; }
+  .site-menu .nav a {
+    display: block;
+    padding: 6px 0;
+    font-size: 40px;
+    line-height: normal;
+    letter-spacing: -.01em;
+    color: var(--fg);
+  }
+  .site-menu .nav a:not(.active) { color: var(--subtle); }
+  .site-menu .nav li {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .35s ease, transform .45s cubic-bezier(.2, .7, .2, 1);
+  }
+  .header.is-open .site-menu .nav li { opacity: 1; transform: none; }
+  .header.is-open .site-menu .nav li:nth-child(2) { transition-delay: .04s; }
+  .header.is-open .site-menu .nav li:nth-child(3) { transition-delay: .08s; }
+  .header.is-open .site-menu .nav li:nth-child(4) { transition-delay: .12s; }
+  .header.is-open .site-menu .nav li:nth-child(5) { transition-delay: .16s; }
 }
 
 @media (max-width: 360px) {
   .scribble { display: none; }
+}
+
+/* ───────── Celular: ajustes gerais ───────── */
+
+/* Foto do "Lucas." também abre com toque (o toque dá foco) */
+.name-peek:focus img { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  /* Contact: texto e canais numa coluna só */
+  .contact__intro { grid-template-columns: 1fr; padding-bottom: 48px; }
+  .contact__intro .about__bio { justify-self: start; }
+}
+
+@media (max-width: 600px) {
+  /* Projeto anterior / próximo: um embaixo do outro */
+  .project__pager { grid-template-columns: 1fr; gap: 24px; margin-top: 64px; }
+  .pager--next { flex-direction: row; text-align: left; }
+  .pager__thumb { width: 88px; }
+
+  /* Áreas de toque maiores (mín. ~32px) sem mudar o visual */
+  .projects ul { gap: 2px; }
+  .projects a { padding: 7px 0; }
+  .intro a, .intro .ink u { padding: 4px 0; }
+  .footer__bar ul { gap: 20px; }
+  .footer__bar a, .footer__bar button { display: inline-block; padding: 8px 0; }
+  .footer__contacts a, .footer__more { display: inline-block; padding: 6px 0; }
+  .channel { padding: 16px 0; }
+  .project__back { padding: 8px 0; margin-bottom: 6px; }
+  .site-bar a { padding: 8px 0; }
+  .brand { padding: 8px 0; margin: -8px 0; }
+  .channel a, .project__link { display: inline-block; padding: 6px 0; }
+  .intro a { display: inline-block; padding: 6px 0; margin: -6px 0; }
+
+  /* Páginas internas com menos respiro no topo */
+  .category, .project, .about, .contact { padding-top: 56px; }
+  .project .project__back { margin-top: -8px; }
+  .category__title, .about__title, .project__title { font-size: 32px; }
+
+  /* Tela cheia: imagem ocupa a largura, controles maiores */
+  .lightbox { padding: 16px 12px; }
+  .lightbox__media { height: auto; max-height: calc(100svh - 120px); width: 100%; }
+  .lightbox__bar { gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .lightbox__bar button { padding: 10px 4px; }
+  .lightbox__close { margin-left: 0; }
 }

@@ -135,6 +135,10 @@
 .adm-toast--error { background: #c4361d; }
 
 @media (max-width: 640px) {
+  /* iPhone dá zoom em campos com menos de 16px */
+  .adm-field input, .adm-prefix input, .adm-textarea { font-size: 16px; }
+  .adm h1 { font-size: 32px; }
+  .adm-savebar { flex-wrap: wrap; }
   .adm-row, .adm-cover { flex-direction: column; }
   .adm-list li { flex-wrap: wrap; }
   .adm-list__tools { width: 100%; justify-content: flex-end; }
