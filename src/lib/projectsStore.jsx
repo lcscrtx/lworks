@@ -13,7 +13,7 @@ const ProjectsContext = createContext({ categories: fallback, loaded: false, rel
 function withAllCategories(saved) {
   return fallback.map((base) => {
     const found = saved.find((c) => c.id === base.id);
-    return found ? { ...found, label: base.label, title: base.title, singular: base.singular, layout: base.layout, tagged: base.tagged, caption: base.caption } : { ...base, items: [] };
+    return found ? { ...found, label: base.label, title: base.title, singular: base.singular, layout: base.layout, tagged: base.tagged, caption: base.caption, fullWidth: base.fullWidth } : { ...base, items: [] };
   });
 }
 

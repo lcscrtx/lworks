@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { useCategories } from '@/lib/projectsStore';
+import { useProjects } from '@/lib/projectsStore';
 import Footer from '@/components/Footer';
 import ClientGroups from '@/components/ClientGroups';
 import Masonry from '@/components/Masonry';
@@ -11,7 +11,7 @@ import { captionOf } from '@/data/projects';
 
 export default function Category() {
   const { id } = useParams();
-  const categories = useCategories();
+  const { categories, loaded } = useProjects();
   const category = categories.find((c) => c.id === id);
   const [open, setOpen] = useState(null); // layout 'gallery': { item, index }
 
@@ -22,6 +22,7 @@ export default function Category() {
   useTitle(category?.title || category?.label);
   useEffect(() => { window.scrollTo(0, 0); setOpen(null); }, [id]);
 
+  if (!category && !loaded) return null;
   if (!category) return <Navigate to="/" replace />;
 
   const cards = category.items.map((item, i) => {

@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { useCategories } from '@/lib/projectsStore';
+import { useProjects } from '@/lib/projectsStore';
 import { useImageRatios, ratioOf, mediaSrcs } from '@/lib/useImageRatios';
 import { useTitle } from '@/lib/useTitle';
 import Footer from '@/components/Footer';
@@ -15,7 +15,7 @@ const Lines = ({ text }) =>
 
 export default function Project() {
   const { id, slug } = useParams();
-  const categories = useCategories();
+  const { categories, loaded } = useProjects();
   const category = categories.find((c) => c.id === id);
   const list = category ? category.items.filter((p) => p.slug) : [];
   const at = list.findIndex((p) => p.slug === slug);
@@ -35,6 +35,7 @@ export default function Project() {
   useTitle(project && `${project.title} — ${captionOf(category, project)}`);
   useEffect(() => { window.scrollTo(0, 0); setOpen(null); }, [id, slug]);
 
+  if (!project && !loaded) return null; // espera os projetos antes de decidir que não existe
   if (!project) return <Navigate to={category ? `/projects/${id}` : '/'} replace />;
 
   let step = 0; // ordem da animação de entrada
@@ -86,13 +87,13 @@ export default function Project() {
               {block.body.map((p, i) => <p key={i}><Lines text={p} /></p>)}
             </div>
           ) : (
-            <div className={`project__gallery${block.items.every((i) => i.full) ? ' is-stack' : ''}`} key={b}>
+            <div className={`project__gallery${block.items.every((i) => i.full || category.fullWidth) ? ' is-stack' : ''}`} key={b}>
               {block.items.map((img, i) => {
                 // Site ao vivo: o site real dentro de uma moldura de navegador
                 if (img.embed) {
                   return (
                     <div
-                      className={`project__media project__site reveal${img.full ? ' is-full' : ''}`}
+                      className={`project__media project__site reveal${img.full || category.fullWidth ? ' is-full' : ''}`}
                       style={{ ...delay(), aspectRatio: img.ratio || 952 / 615 }}
                       key={i}
                     >
@@ -114,7 +115,7 @@ export default function Project() {
                 return (
                   <button
                     type="button"
-                    className={`project__media reveal${img.full ? ' is-full' : ''}`}
+                    className={`project__media reveal${img.full || category.fullWidth ? ' is-full' : ''}`}
                     style={{ ...delay(), aspectRatio: ratioOf(img, ratios) }}
                     onClick={() => setOpen(index)}
                     aria-label={`Ampliar imagem ${index + 1}`}

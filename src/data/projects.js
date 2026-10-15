@@ -110,6 +110,7 @@ export const categories = [
     id: 'ui-ux-design',
     label: 'UI/UX Design',
     singular: 'UI/UX Design',
+    fullWidth: true, // galerias com 1 imagem por linha (telas grandes)
     items: [
       { title: 'Cliente do Projeto 01', slug: 'projeto-01', ratio: 304 / 214, ...SAMPLE_UI },
       { title: 'Cliente do Projeto 02', slug: 'projeto-02', ratio: 304 / 214, ...SAMPLE_UI },
