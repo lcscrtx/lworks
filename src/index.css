@@ -498,10 +498,8 @@ a { color: inherit; }
 .category__title,
 .work,
 .reveal {
-  opacity: 0;
-  transform: translateY(12px);
-  filter: blur(4px);
-  animation: text-in .8s cubic-bezier(.2, .7, .2, 1) forwards;
+  --rise: 12px;
+  animation: text-in .8s cubic-bezier(.2, .7, .2, 1) backwards;
 }
 .category__title { animation-delay: .1s; }
 .work, .reveal { animation-delay: var(--delay, .25s); }
@@ -571,10 +569,7 @@ a { color: inherit; }
 
 /* Entrada: parágrafos sobem em sequência, depois o rabisco é desenhado da esquerda para a direita */
 .intro p {
-  opacity: 0;
-  transform: translateY(8px);
-  filter: blur(4px);
-  animation: text-in .8s cubic-bezier(.2, .7, .2, 1) forwards;
+  animation: text-in .8s cubic-bezier(.2, .7, .2, 1) backwards;
 }
 .intro p:nth-child(1) { animation-delay: .1s; }
 .intro p:nth-child(2) { animation-delay: .22s; }
@@ -593,10 +588,7 @@ a { color: inherit; }
 /* Projects da home: entra junto com o texto, título e depois cada categoria */
 .projects__title,
 .projects li {
-  opacity: 0;
-  transform: translateY(8px);
-  filter: blur(4px);
-  animation: text-in .8s cubic-bezier(.2, .7, .2, 1) forwards;
+  animation: text-in .8s cubic-bezier(.2, .7, .2, 1) backwards;
 }
 .projects__title { animation-delay: .3s; }
 .projects li:nth-child(1) { animation-delay: .42s; }
@@ -608,8 +600,13 @@ a { color: inherit; }
   .projects__title, .projects li { animation: none; opacity: 1; transform: none; filter: none; }
 }
 
+/*
+  Entrada: só o estado inicial é definido. Ao terminar, o elemento volta ao estilo normal
+  (sem filtro nem transformação), o que mantém as imagens nítidas — um filtro residual
+  faz o navegador reduzir as imagens com qualidade menor.
+*/
 @keyframes text-in {
-  to { opacity: 1; transform: none; filter: blur(0); }
+  from { opacity: 0; transform: translateY(var(--rise, 8px)); filter: blur(4px); }
 }
 @keyframes draw {
   to { clip-path: inset(-4px 0 -4px 0); }
