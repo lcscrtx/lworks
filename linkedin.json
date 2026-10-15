@@ -1,0 +1,172 @@
+{
+  "fonte": {
+    "perfil": "https://www.linkedin.com/in/lucas-cartaxo-015152181/",
+    "data_extracao": "2026-10-15",
+    "observacoes": "Textos copiados do perfil em português. Períodos e durações preservados conforme exibidos pelo LinkedIn. Campos e seções ausentes estão marcados como não encontrado. A seção Atividades não foi tratada como seção Em destaque ou Projetos."
+  },
+  "perfil": {
+    "nome": "Lucas Cartaxo",
+    "headline": "Chief Design Officer (CDO) | Product, UX & AI-Driven Design @ ShiftLabs",
+    "localizacao": "João Pessoa, Paraíba, Brasil",
+    "sobre": "Sou Chief Design Officer (CDO) com 8+ anos de experiência em design, atuando na interseção entre produto, branding, experiência do usuário e estratégia de negócio.\n\nAo longo da minha trajetória, liderei iniciativas e projetos de design, participei da estruturação de áreas e atuei diretamente na concepção e evolução de produtos digitais, sempre conectando experiência, consistência e impacto real no negócio.\n\nTenho forte atuação em design systems, UX e construção de experiências escaláveis, acompanhando desde a visão estratégica até a execução.\n\nAtualmente, lidero a área de design, produto e identidade na ShiftLabs como CDO, posição que assumi há poucos meses e que consolida uma atuação que já vinha desenvolvendo ao longo da minha carreira.\n\nAlém da liderança, atuo de forma prática como designer-coder, utilizando IA como Claude, Codex e Antigravity para acelerar a construção de interfaces e produtos, reduzindo a distância entre ideia e entrega.\n\nMeu foco é conectar design, produto e marca para gerar impacto mensurável, unindo clareza estratégica, consistência visual e decisões orientadas por dados.",
+    "idioma_do_perfil": "Português"
+  },
+  "experiencias": [
+    {
+      "empresa": "ShiftLabs",
+      "cargo": "Chief Design Officer",
+      "periodo": "jan. de 2026 - o momento",
+      "duracao": "10 meses",
+      "tipo_vinculo": "Tempo integral",
+      "localizacao": "João Pessoa, Paraíba, Brasil",
+      "modalidade": "No local",
+      "descricao": "Lidero estratégia de design, produto e experiência com foco em resultado de negócio. Atuo conectando UX, dados e tecnologia para criar produtos escaláveis, claros e orientados à decisão e quando necessário, me aventuro no front-end utilizando o Antigravity para acelerar prototipação, validação e execução."
+    },
+    {
+      "empresa": "ShiftLabs",
+      "cargo": "Head of Product Design",
+      "periodo": "out. de 2025 - jan. de 2026",
+      "duracao": "4 meses",
+      "tipo_vinculo": "Tempo integral",
+      "localizacao": "João Pessoa, Paraíba, Brasil",
+      "modalidade": "No local",
+      "descricao": "Como Head de Product Design, liderei a visão de design de ponta a ponta, garantindo que a experiência do usuário estivesse intrinsecamente ligada aos objetivos de negócio e à viabilidade técnica."
+    },
+    {
+      "empresa": "WFBD – Wayne Formiga Brand Design",
+      "cargo": "Diretor de arte sênior",
+      "periodo": "out. de 2024 - jan. de 2026",
+      "duracao": "1 ano 4 meses",
+      "tipo_vinculo": "Tempo integral",
+      "localizacao": "João Pessoa, Paraíba, Brasil",
+      "modalidade": "No local",
+      "descricao": "Atualmente, trabalho com branding, criando identidades visuais que ajudam marcas a se conectar de forma única com seu público. Além disso, estou envolvido em projetos publicitários, desenvolvendo campanhas criativas e estratégias visuais que buscam resultados impactantes para os clientes. Minha abordagem é sempre focada em inovação e na criação de soluções que atendem às necessidades do mercado."
+    },
+    {
+      "empresa": "Supbrokers",
+      "cargo": "Cofundador",
+      "periodo": "jan. de 2023 - mai. de 2025",
+      "duracao": "2 anos 5 meses",
+      "tipo_vinculo": "Tempo integral",
+      "localizacao": "João Pessoa, Paraíba, Brasil",
+      "modalidade": "Remoto",
+      "descricao": "A Supbrokers surgiu como uma startup voltada para corretores e imobiliárias, com o propósito de facilitar e otimizar o trabalho dos profissionais do setor. Participamos de programas intensivos do Sebrae, que contribuíram significativamente para o avanço do projeto. Atualmente, a iniciativa está pausada."
+    },
+    {
+      "empresa": "Cubo Tecnologia",
+      "cargo": "Designer de produtos pleno",
+      "periodo": "abr. de 2022 - set. de 2024",
+      "duracao": "2 anos 6 meses",
+      "tipo_vinculo": "Tempo integral",
+      "localizacao": "João Pessoa, Paraíba, Brasil",
+      "modalidade": "Híbrido",
+      "descricao": "Na Cubo tive a responsabilidade de criar do zero o aplicativo Cidade Conectada, voltado para melhorar o relacionamento entre prefeituras, órgãos municipais e os cidadãos. Desenvolvi todo o design do produto, incluindo fluxos e interfaces, garantindo uma experiência intuitiva e funcional para os usuários, com foco em facilitar o acesso a serviços públicos e informações relevantes."
+    },
+    {
+      "empresa": "hiselly – Inteligência Imobiliária",
+      "cargo": "Diretor de arte pleno",
+      "periodo": "mar. de 2021 - jul. de 2022",
+      "duracao": "1 ano 5 meses",
+      "tipo_vinculo": "Tempo integral",
+      "localizacao": "João Pessoa, Paraíba, Brasil",
+      "modalidade": "No local",
+      "descricao": "Na Hiselly, trabalhei no branding de empreendimentos e lançamentos de imóveis, criando identidades visuais que se destacassem. Também fui responsável pela criação de peças para redes sociais, incluindo materiais direcionados ao tráfego pago, sempre com foco em design e impacto visual. Além disso, tive a oportunidade de colaborar em projetos de UI e UX."
+    },
+    {
+      "empresa": "Obo Studio",
+      "cargo": "Diretor de arte júnior",
+      "periodo": "jan. de 2021 - out. de 2021",
+      "duracao": "10 meses",
+      "tipo_vinculo": "Tempo integral",
+      "localizacao": "Fortaleza, Ceará, Brasil",
+      "modalidade": "No local",
+      "descricao": "Trabalhei como Diretor de Arte, criando campanhas publicitárias focadas em social media e estratégias online. Meu papel era transformar ideias em conteúdos visuais impactantes e alinhados com as necessidades dos clientes, sempre buscando inovar e engajar o público de maneira criativa."
+    },
+    {
+      "empresa": "Zona Midia e Marketing",
+      "cargo": "Diretor de arte júnior",
+      "periodo": "fev. de 2019 - ago. de 2020",
+      "duracao": "1 ano 7 meses",
+      "tipo_vinculo": "não encontrado",
+      "localizacao": "Fortaleza e Região",
+      "modalidade": "No local",
+      "descricao": "Após uma valiosa experiência como estagiário, assumi um novo desafio em uma agência de publicidade especializada em estratégias de marketing offline. Neste cargo, ampliei meus conhecimentos em campanhas offline e contribuo com a criação e execução de soluções criativas, atendendo às necessidades dos clientes e sempre focando em resultados impactantes e eficazes."
+    },
+    {
+      "empresa": "BRZ Digital",
+      "cargo": "Designer de interface do usuário",
+      "periodo": "jun. de 2018 - fev. de 2019",
+      "duracao": "9 meses",
+      "tipo_vinculo": "Estágio",
+      "localizacao": "João Pessoa, Paraíba, Brasil",
+      "modalidade": "No local",
+      "descricao": "Conquistei essa vaga ainda no primeiro semestre da faculdade, o que marcou o início da minha trajetória profissional no design. Atuei como UI Designer, contribuindo no desenvolvimento de interfaces para sites e aplicativos, sempre com foco na experiência do usuário. Durante o estágio, aprendi na prática sobre fluxos de navegação, design responsivo e colaboração com equipes multidisciplinares. Foi uma experiência essencial para consolidar minha base em UX/UI."
+    }
+  ],
+  "formacao": [
+    {
+      "instituicao": "UNIESP Centro Universitário",
+      "grau": "Bacharelado",
+      "area": "Graphic Design",
+      "periodo": "jan. de 2019 – dez. de 2023",
+      "descricao": "não encontrado"
+    }
+  ],
+  "skills": {
+    "total_exibido": 28,
+    "principais_competencias": [
+      "Design de interface do usuário",
+      "Design gráfico",
+      "Branding",
+      "Experiência do usuário",
+      "Design de produtos"
+    ],
+    "todas": [
+      "Gestão de produtos",
+      "Desenvolvimento de produtos",
+      "Projeto corporativo",
+      "Gestão de design",
+      "Liderança em design",
+      "Design de produtos",
+      "Design de experiência do usuário (UX)",
+      "Branding",
+      "Prototipagem de interfaces de usuário",
+      "Desenvolvimento de interface web",
+      "Gestão de projetos",
+      "Direção de arte",
+      "Direção criativa",
+      "Design publicitário",
+      "Relacionamentos interpessoais",
+      "Edição de imagens",
+      "Comunicação escrita",
+      "Adobe After Effects",
+      "Experiência do usuário (UX)",
+      "Adobe Photoshop",
+      "Design de interface do usuário",
+      "Design de logotipos",
+      "Design de interação",
+      "Design gráfico",
+      "Web design",
+      "Design de UX",
+      "Design visual",
+      "Experiência do usuário"
+    ]
+  },
+  "certificacoes": "não encontrado",
+  "idiomas": "não encontrado",
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/lucas-cartaxo-015152181/",
+    "site": "não encontrado",
+    "behance": "não encontrado",
+    "dribbble": "não encontrado",
+    "github": "não encontrado"
+  },
+  "projetos": {
+    "status": "não encontrado",
+    "itens": []
+  },
+  "trabalhos_em_destaque": {
+    "status": "não encontrado",
+    "itens": []
+  }
+}
