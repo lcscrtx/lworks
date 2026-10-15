@@ -1,0 +1,107 @@
+diff --git a/apps/catalogo/src/site/Inicio.tsx b/apps/catalogo/src/site/Inicio.tsx
+index c5adc78..7f45018 100644
+--- a/apps/catalogo/src/site/Inicio.tsx
++++ b/apps/catalogo/src/site/Inicio.tsx
+@@ -8,6 +8,7 @@ import { brandColors, densities, densityValues, primitives, themes, type Density
+ import { nomeDensidade, nomeTema } from '../partes';
+ import { iconeDoSite } from './contexto';
+ import { Rotulo } from './Abertura';
++import { comBase } from './navegacao';
+ import { modelosDoSite, paginasDeComponentes } from './rotas';
+ import { modelos } from '../ModelosPaginas';
+ 
+@@ -349,7 +350,7 @@ function Miniatura({ slug, nome, descricao }: { slug: string; nome: string; desc
+     <a href={`/modelos/${slug}`} className="ts:group ts:flex ts:flex-col ts:gap-12 ts:rounded-xl">
+       <div ref={caixa} inert className="ts:relative ts:aspect-[16/10] ts:overflow-hidden ts:rounded-xl ts:border ts:border-border-default ts:bg-bg-subtle ts:transition-shadow ts:duration-(--ts-duration-fast) ts:group-hover:shadow-md">
+         <iframe
+-          src={`/modelos/${slug}/tela-cheia`}
++          src={comBase(`/modelos/${slug}/tela-cheia`)}
+           title={`Prévia do modelo ${nome}`}
+           loading="lazy"
+           className="ts:pointer-events-none ts:absolute ts:left-0 ts:top-0 ts:h-[var(--ts-site-preview-frame-height)] ts:w-[var(--ts-site-preview-frame-width)] ts:origin-top-left ts:border-0"
+diff --git a/apps/catalogo/src/site/ModelosGaleria.tsx b/apps/catalogo/src/site/ModelosGaleria.tsx
+index 29d1f4a..21588ae 100644
+--- a/apps/catalogo/src/site/ModelosGaleria.tsx
++++ b/apps/catalogo/src/site/ModelosGaleria.tsx
+@@ -9,7 +9,7 @@ import { BotaoCopiar, CodigoRealcado } from './Codigo';
+ import { iconeDoSite, useAmbiente } from './contexto';
+ import { AberturaDePagina } from './Abertura';
+ import { ComandoDeInstalacao } from './DocsPaginas';
+-import { navegar, useCaminho } from './navegacao';
++import { comBase, navegar, useCaminho } from './navegacao';
+ import { modelosDoSite, paginasDeComponentes } from './rotas';
+ 
+ const larguras = { computador: '100%', tablet: '768px', celular: '390px' } as const;
+@@ -132,7 +132,7 @@ function GaleriaDeModelos({ atual }: { atual: (typeof modelosDoSite)[number] })
+             <div className="ts:flex ts:justify-center">
+               <iframe
+                 key={`${atual.slug}-${recarregar}`}
+-                src={endereco}
++                src={comBase(endereco)}
+                 title={`Modelo ${atual.nome}`}
+                 className="ts:h-[var(--ts-site-preview-frame-height)] ts:max-w-full ts:border-0 ts:bg-bg-base ts:transition-[width] ts:duration-(--ts-duration-slow) ts:ease-out ts:motion-reduce:transition-none"
+                 style={{ width: larguras[largura] }}
+diff --git a/apps/catalogo/src/site/navegacao.ts b/apps/catalogo/src/site/navegacao.ts
+index 3e56d5e..b534392 100644
+--- a/apps/catalogo/src/site/navegacao.ts
++++ b/apps/catalogo/src/site/navegacao.ts
+@@ -2,6 +2,20 @@ import { useEffect, useSyncExternalStore } from 'react';
+ 
+ const EVENTO = 'tessela:navegou';
+ 
++/** Prefixo onde o site está publicado (`/tessela` num subcaminho; vazio na raiz). Os caminhos do site seguem sem ele. */
++const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
++
++/** Caminho do site (`/docs`) com o prefixo de publicação, para `src` e `href` montados à mão. */
++export function comBase(caminho: string) {
++  if (!BASE || !caminho.startsWith('/') || caminho === BASE || caminho.startsWith(`${BASE}/`)) return caminho;
++  return BASE + caminho;
++}
++
++function semBase(caminho: string) {
++  if (!BASE || (caminho !== BASE && !caminho.startsWith(`${BASE}/`))) return caminho;
++  return caminho.slice(BASE.length) || '/';
++}
++
+ function assinar(aoMudar: () => void) {
+   window.addEventListener('popstate', aoMudar);
+   window.addEventListener(EVENTO, aoMudar);
+@@ -13,12 +27,12 @@ function assinar(aoMudar: () => void) {
+ 
+ /** O caminho atual (`/docs/componentes/button`), sem barra no fim. */
+ export function useCaminho() {
+-  return useSyncExternalStore(assinar, () => window.location.pathname.replace(/\/+$/, '') || '/');
++  return useSyncExternalStore(assinar, () => semBase(window.location.pathname).replace(/\/+$/, '') || '/');
+ }
+ 
+ /** Vai para outro caminho do site sem recarregar. Com `#secao`, rola até ela; sem, volta ao topo (ou fica onde está, com `manterRolagem`). */
+ export function navegar(destino: string, { substituir = false, manterRolagem = false } = {}) {
+-  const url = new URL(destino, window.location.href);
++  const url = new URL(comBase(destino), window.location.href);
+   if (url.pathname + url.search + url.hash === window.location.pathname + window.location.search + window.location.hash) return;
+   window.history[substituir ? 'replaceState' : 'pushState'](null, '', url.pathname + url.search + url.hash);
+   window.dispatchEvent(new Event(EVENTO));
+@@ -35,8 +49,22 @@ export function navegar(destino: string, { substituir = false, manterRolagem = f
+   });
+ }
+ 
+-/** Links internos (`<a href="/docs">`) navegam sem recarregar a página. */
++/** Links internos (`<a href="/docs">`) navegam sem recarregar a página. Num subcaminho, ganham o prefixo. */
+ export function useLinksInternos() {
++  useEffect(() => {
++    if (!BASE) return;
++    const prefixar = () => {
++      document.querySelectorAll<HTMLAnchorElement>('a[href^="/"]').forEach((a) => {
++        const href = a.getAttribute('href')!;
++        const novo = comBase(href);
++        if (novo !== href) a.setAttribute('href', novo);
++      });
++    };
++    prefixar();
++    const observador = new MutationObserver(prefixar);
++    observador.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['href'] });
++    return () => observador.disconnect();
++  }, []);
+   useEffect(() => {
+     function clique(e: MouseEvent) {
+       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;

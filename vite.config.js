@@ -22,6 +22,18 @@ function localApi() {
         }
       });
 
+      // O Tessela (public/tessela) é outro site, com rotas próprias: /tessela/docs etc. abrem o index.html dele
+      server.middlewares.use('/tessela', async (req, res, next) => {
+        if (path.extname(req.url.split('?')[0])) return next();
+        const fs = await import('node:fs/promises');
+        try {
+          res.setHeader('Content-Type', 'text/html');
+          res.end(await fs.readFile(path.resolve('public/tessela/index.html')));
+        } catch {
+          next();
+        }
+      });
+
       server.middlewares.use(async (req, res, next) => {
         const route = req.url.split('?')[0].match(/^\/api\/(login|projects|pages|upload)$/)?.[1];
         if (!route) return next();

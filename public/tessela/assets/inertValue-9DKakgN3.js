@@ -1,0 +1,1 @@
+import{wr as e}from"./Codigo-Dgz1In5l.js";function t(t){return e(19)?t:t?`true`:void 0}export{t};

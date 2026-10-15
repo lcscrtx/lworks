@@ -1,0 +1,1 @@
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{_ as t}from"./recharts-CHWuGRQf.js";var n=e(t(),1);function r(){let[,e]=n.useState({});return n.useCallback(()=>{e({})},[])}export{r as t};

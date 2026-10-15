@@ -1,0 +1,1 @@
+import{C as e,Nr as t}from"./Codigo-Dgz1In5l.js";function n(n,r){let i=e(n);return t(()=>(r(i),()=>{r(e=>e===i?void 0:e)}),[i,r]),i}export{n as t};

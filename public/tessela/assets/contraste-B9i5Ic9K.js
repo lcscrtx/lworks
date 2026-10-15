@@ -1,0 +1,1 @@
+function e(e){let t=e.split(`@`)[0].replace(`#`,``),n=e=>{let n=parseInt(t.slice(e,e+2),16)/255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4};return .2126*n(0)+.7152*n(2)+.0722*n(4)}function t(t,n){let[r,i]=[e(t),e(n)];return(Math.max(r,i)+.05)/(Math.min(r,i)+.05)}export{t};

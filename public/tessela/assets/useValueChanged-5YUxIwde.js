@@ -1,0 +1,1 @@
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{_ as t}from"./recharts-CHWuGRQf.js";import{Nr as n,Pr as r}from"./Codigo-Dgz1In5l.js";var i=e(t(),1);function a(e,t){let a=i.useRef(e),o=r(t);n(()=>{a.current!==e&&o(a.current),a.current=e},[e,o])}export{a as t};
