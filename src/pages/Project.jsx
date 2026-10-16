@@ -5,6 +5,7 @@ import { useImageRatios, ratioOf, mediaSrcs } from '@/lib/useImageRatios';
 import { useTitle } from '@/lib/useTitle';
 import Footer from '@/components/Footer';
 import Lightbox from '@/components/Lightbox';
+import SiteFrame from '@/components/SiteFrame';
 import { captionOf } from '@/data/projects';
 
 // '\n' dentro de um parágrafo vira quebra de linha
@@ -92,23 +93,13 @@ export default function Project() {
                 // Site ao vivo: o site real dentro de uma moldura de navegador
                 if (img.embed) {
                   return (
-                    <div
-                      className={`project__media project__site reveal${img.full || category.fullWidth ? ' is-full' : ''}`}
-                      style={{ ...delay(), aspectRatio: img.ratio || 952 / 615 }}
+                    <SiteFrame
+                      item={img}
+                      title={`Site — ${project.title}`}
+                      className={`reveal${img.full || category.fullWidth ? ' is-full' : ''}`}
+                      style={delay()}
                       key={i}
-                    >
-                      <div className="site-bar">
-                        <span className="site-bar__dots" aria-hidden="true"><i /><i /><i /></span>
-                        <span className="site-bar__url">{img.embed.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}</span>
-                        <a href={img.embed} target="_blank" rel="noopener">Abrir ↗</a>
-                      </div>
-                      <iframe
-                        src={img.embed}
-                        title={`Site — ${project.title}`}
-                        loading="lazy"
-                        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                      />
-                    </div>
+                    />
                   );
                 }
                 const index = g++;

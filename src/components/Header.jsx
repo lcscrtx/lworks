@@ -39,7 +39,16 @@ export default function Header() {
       <nav id="site-menu" className="site-menu">
         <ul className="nav">
           {LINKS.map((l) => (
-            <li key={l.to}><NavLink to={l.to} end={l.end}>{l.label}</NavLink></li>
+            <li key={l.to}>
+              <NavLink
+                to={l.to}
+                end={l.end}
+                // Categorias e projetos ficam dentro de Works
+                className={({ isActive }) => (isActive || (l.to === '/works' && pathname.startsWith('/projects')) ? 'active' : '')}
+              >
+                {l.label}
+              </NavLink>
+            </li>
           ))}
         </ul>
       </nav>

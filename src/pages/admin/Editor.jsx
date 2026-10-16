@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { uploadFile, isVideo } from './api';
+import { uploadFile, isVideo, checkSite } from './api';
 import { WIP_TYPES } from '@/data/projects';
 
 /*
@@ -31,7 +31,8 @@ export function Media({ item, className = '' }) {
   if (item.embed) {
     return (
       <div className={`adm-thumb adm-thumb--site ${className}`}>
-        <span>Site ao vivo</span>
+        {item.shot && <img src={item.shot} alt="" />}
+        <span>{item.blocked ? 'Site (captura rolável)' : 'Site ao vivo'}</span>
         <small>{item.embed.replace(/^https?:\/\/(www\.)?/, '')}</small>
       </div>
     );
@@ -83,6 +84,39 @@ export function UploadButton({ label, multiple, onFiles, storage, accept = 'imag
   );
 }
 
+// Site ao vivo: verifica se ele abre dentro do portfólio; se não abrir, guarda uma captura da página inteira
+async function siteItem(url, capture) {
+  const r = await checkSite(url, capture);
+  const item = { embed: r.url, full: true, ratio: 952 / 615 };
+  if (r.embeddable === false) item.blocked = true;
+  if (r.shot) item.shot = r.shot;
+  const error = r.embeddable === false && !r.shot
+    ? `O site bloqueia a visualização e a captura falhou (${r.shotError}). Tente "Gerar captura" mais tarde.`
+    : '';
+  return { item, error };
+}
+
+function SiteShotButton({ item, onChange }) {
+  const [busy, setBusy] = useState(false);
+  const run = async () => {
+    setBusy(true);
+    try {
+      const { item: fresh } = await siteItem(item.embed, true);
+      onChange({ ...item, blocked: fresh.blocked, shot: fresh.shot || item.shot });
+      if (!fresh.shot) window.alert('Não foi possível gerar a captura. Tente de novo mais tarde.');
+    } catch (err) {
+      window.alert(err.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <button type="button" onClick={run} disabled={busy} title="Verifica o site de novo e tira uma nova captura da página">
+      {busy ? 'Capturando…' : item.shot ? 'Nova captura' : 'Gerar captura'}
+    </button>
+  );
+}
+
 // Grade de mídias com reordenar, largura total e remover
 function MediaGrid({ items, onChange, allowFull }) {
   return (
@@ -103,6 +137,7 @@ function MediaGrid({ items, onChange, allowFull }) {
                 Largura total
               </label>
             )}
+            {item.embed && <SiteShotButton item={item} onChange={(it) => onChange(items.map((x, j) => (j === i ? it : x)))} />}
             <button type="button" className="adm-danger" onClick={() => onChange(items.filter((_, j) => j !== i))}>
               Remover
             </button>
@@ -123,6 +158,7 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
     toolsText: (item.tools || []).join(', ')
   }));
   const [error, setError] = useState('');
+  const [addingSite, setAddingSite] = useState(false);
   const set = (patch) => setDraft((d) => ({ ...d, ...patch }));
   const blocks = draft.blocks || [];
   const setBlocks = (next) => set({ blocks: next });
@@ -344,15 +380,27 @@ export default function Editor({ category, item, isNew, storage, onSave, onCance
                   <button
                     type="button"
                     className="adm-btn adm-btn--self"
-                    onClick={() => {
-                      let url = window.prompt('Endereço do site (ex.: https://meusite.com.br)')?.trim();
+                    disabled={addingSite}
+                    onClick={async () => {
+                      const url = window.prompt('Endereço do site (ex.: https://meusite.com.br)')?.trim();
                       if (!url) return;
-                      if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
-                      const site = { embed: url, full: true, ratio: 952 / 615 };
-                      setBlocks(blocks.map((x, j) => (j === b ? { ...x, items: [...x.items, site] } : x)));
+                      setAddingSite(true);
+                      setError('');
+                      try {
+                        const { item: site, error: siteError } = await siteItem(url);
+                        setDraft((d) => ({
+                          ...d,
+                          blocks: d.blocks.map((x, j) => (j === b ? { ...x, items: [...x.items, site] } : x))
+                        }));
+                        if (siteError) setError(siteError);
+                      } catch (err) {
+                        setError(err.message);
+                      } finally {
+                        setAddingSite(false);
+                      }
                     }}
                   >
-                    + Site ao vivo
+                    {addingSite ? 'Verificando o site…' : '+ Site ao vivo'}
                   </button>
                 </>
               )}

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useCategories } from '@/lib/projectsStore';
 import Footer from '@/components/Footer';
 import Masonry from '@/components/Masonry';
+import CategoryNav from '@/components/CategoryNav';
 import { useTitle } from '@/lib/useTitle';
 import { captionOf } from '@/data/projects';
 
@@ -35,6 +36,7 @@ export default function Works() {
     <>
       <main className="container category">
         <h1 className="category__title">Works</h1>
+        <CategoryNav />
         <Masonry items={mixAll(categories)} />
       </main>
 

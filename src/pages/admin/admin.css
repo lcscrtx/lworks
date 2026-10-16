@@ -3,13 +3,13 @@
   width: min(952px, 100% - 32px);
   margin: 0 auto;
   padding: 24px 0 120px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 18px;
   color: var(--fg);
 }
 .adm-center { min-height: 100svh; display: grid; place-items: center; padding: 0; color: var(--muted); }
 .adm h1 { font-size: 40px; font-weight: 500; line-height: normal; }
-.adm h2 { font-size: 12px; font-weight: 500; }
+.adm h2 { font-size: 14px; font-weight: 500; }
 .adm code { font-family: ui-monospace, monospace; font-size: 11px; }
 
 .adm-brand span { color: var(--subtle); }
@@ -83,7 +83,7 @@
 .adm-cat { padding: 24px 0 32px; border-top: 1px solid #e3e3e3; }
 .adm-cat__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .adm-cat__head h2 { font-size: 24px; line-height: normal; }
-.adm-cat__head h2 span { color: var(--subtle); font-size: 12px; vertical-align: middle; margin-left: 4px; }
+.adm-cat__head h2 span { color: var(--subtle); font-size: 14px; vertical-align: middle; margin-left: 4px; }
 .adm-list { list-style: none; }
 .adm-list li { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-top: 1px solid #f0f0f0; }
 .adm-list li:first-child { border-top: 0; }
@@ -153,3 +153,6 @@
   .adm-list li { flex-wrap: wrap; }
   .adm-list__tools { width: 100%; justify-content: flex-end; }
 }
+.adm-thumb--site { position: relative; overflow: hidden; }
+.adm-thumb--site img { position: absolute; inset: 0; object-position: top; opacity: .3; }
+.adm-thumb--site span, .adm-thumb--site small { position: relative; }

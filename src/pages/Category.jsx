@@ -4,6 +4,7 @@ import { useProjects } from '@/lib/projectsStore';
 import Footer from '@/components/Footer';
 import ClientGroups from '@/components/ClientGroups';
 import Masonry from '@/components/Masonry';
+import CategoryNav from '@/components/CategoryNav';
 import Lightbox from '@/components/Lightbox';
 import { useTitle } from '@/lib/useTitle';
 import { useImageRatios, ratioOf, mediaSrcs } from '@/lib/useImageRatios';
@@ -47,6 +48,7 @@ export default function Category() {
     <>
       <main className="container category" key={id}>
         <h1 className="category__title">{category.title || category.label}</h1>
+        <CategoryNav />
 
         {category.items.length === 0 ? (
           <p className="category__empty">Nada por aqui ainda.</p>

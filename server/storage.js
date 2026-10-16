@@ -62,3 +62,13 @@ export async function saveLocalFile(name, buffer) {
   await fs.writeFile(path.join(LOCAL_UPLOADS, file), buffer);
   return `/uploads/${file}`;
 }
+
+// Arquivo gerado pelo servidor (ex.: captura de tela de um site): Blob na Vercel, public/uploads no computador
+export async function saveFile(name, buffer, contentType) {
+  if (mode() === 'blob') {
+    const { put } = await import('@vercel/blob');
+    const blob = await put(`works/${name}`, buffer, { access: 'public', contentType, addRandomSuffix: true });
+    return blob.url;
+  }
+  return saveLocalFile(name, buffer);
+}

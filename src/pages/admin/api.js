@@ -59,3 +59,7 @@ export const isVideo = (url = '') => /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url);
 // Textos e imagens das páginas About e Contact
 export const savePages = (pages) =>
   request('/api/pages', { method: 'PUT', body: JSON.stringify(pages) });
+
+// Verifica se um site pode aparecer dentro do portfólio; se não puder (ou se capture), gera a captura da página
+export const checkSite = (url, capture = false) =>
+  request('/api/site', { method: 'POST', body: JSON.stringify({ url, capture }) });

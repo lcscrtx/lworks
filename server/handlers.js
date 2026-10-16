@@ -1,5 +1,5 @@
 import { checkPassword, createToken, verifyToken, tokenFrom } from './auth.js';
-import { mode, readProjects, writeProjects, readPages, writePages, saveLocalFile } from './storage.js';
+import { mode, readProjects, writeProjects, readPages, writePages, saveLocalFile, saveFile } from './storage.js';
 
 /*
   Handlers da API, escritos com Node puro para rodar igual
@@ -132,5 +132,97 @@ export async function upload(req, res) {
   } catch (err) {
     console.error(err);
     send(res, err.status || 400, { error: err.message || 'Falha no upload' });
+  }
+}
+
+/*
+  Sites ao vivo (página Development)
+  Muitos sites proíbem aparecer dentro de outro site (X-Frame-Options / CSP frame-ancestors).
+  Para esses, o projeto mostra uma captura da página inteira, rolável, dentro da moldura.
+*/
+const normalizeUrl = (raw) => {
+  let url = String(raw || '').trim();
+  if (!url) return null;
+  if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
+  try {
+    const u = new URL(url);
+    return /^https?:$/.test(u.protocol) ? u.href : null;
+  } catch {
+    return null;
+  }
+};
+
+// true = pode ir num iframe, false = bloqueia, null = não deu para saber (site fora do ar etc.)
+async function canEmbed(url, ourHost) {
+  try {
+    const res = await fetch(url, {
+      redirect: 'follow',
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; LWORKS preview)' },
+      signal: AbortSignal.timeout(8000)
+    });
+    res.body?.cancel?.();
+    const xfo = (res.headers.get('x-frame-options') || '').toLowerCase();
+    if (xfo.includes('deny') || xfo.includes('sameorigin') || xfo.includes('allow-from')) return false;
+    const csp = res.headers.get('content-security-policy') || '';
+    const fa = csp.split(';').map((d) => d.trim()).find((d) => d.toLowerCase().startsWith('frame-ancestors'));
+    if (fa) {
+      const sources = fa.split(/\s+/).slice(1);
+      return sources.some((s) => s === '*' || s === 'https:' || (ourHost && s.includes(ourHost)));
+    }
+    return true;
+  } catch {
+    return null;
+  }
+}
+
+// Captura da página inteira (serviço gratuito Microlink), guardada junto das outras imagens
+async function captureSite(url) {
+  const api = new URL('https://api.microlink.io/');
+  api.search = new URLSearchParams({
+    url, screenshot: 'true', fullPage: 'true', meta: 'false',
+    'viewport.width': '1440', 'viewport.height': '900', waitUntil: 'networkidle2'
+  });
+  const res = await fetch(api, { signal: AbortSignal.timeout(45000) });
+  const data = await res.json().catch(() => ({}));
+  const shotUrl = data?.data?.screenshot?.url;
+  if (!res.ok || !shotUrl) throw new Error(data?.message || 'Não foi possível capturar o site');
+  const img = await fetch(shotUrl);
+  if (!img.ok) throw new Error('Não foi possível baixar a captura');
+  const host = new URL(url).hostname.replace(/^www\./, '').replace(/[^a-z0-9.-]+/gi, '-');
+  return saveFile(`site-${host}.png`, Buffer.from(await img.arrayBuffer()), 'image/png');
+}
+
+// GET  /api/site?url=…       → { embeddable }                (público)
+// POST /api/site { url, capture } → { url, embeddable, shot? } (precisa estar logado)
+export async function site(req, res) {
+  try {
+    const ourHost = (req.headers['x-forwarded-host'] || req.headers.host || '').split(':')[0];
+    if (req.method === 'GET') {
+      const url = normalizeUrl(new URL(req.url, 'http://local').searchParams.get('url'));
+      if (!url) return send(res, 400, { error: 'Endereço inválido' });
+      const embeddable = await canEmbed(url, ourHost);
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+      return res.end(JSON.stringify({ embeddable }));
+    }
+    if (req.method !== 'POST') return send(res, 405, { error: 'Método não permitido' });
+    if (!isAuthed(req)) return send(res, 401, { error: 'Sessão expirada. Entre de novo.' });
+    const body = await readJson(req);
+    const url = normalizeUrl(body.url);
+    if (!url) return send(res, 400, { error: 'Endereço inválido' });
+    const embeddable = await canEmbed(url, ourHost);
+    const result = { url, embeddable };
+    if (body.capture || embeddable === false) {
+      try {
+        result.shot = await captureSite(url);
+      } catch (err) {
+        result.shotError = err.message;
+      }
+    }
+    send(res, 200, result);
+  } catch (err) {
+    console.error(err);
+    send(res, 500, { error: 'Erro ao verificar o site' });
   }
 }
