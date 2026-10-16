@@ -754,3 +754,15 @@ a { color: inherit; }
   .category-nav li { flex-shrink: 0; }
   .category-nav a { display: inline-block; padding: 8px 0; }
 }
+.project__site { position: relative; }
+.site-shot__note {
+  position: absolute; right: 16px; bottom: 16px; max-width: calc(100% - 32px);
+  padding: 8px 12px; border-radius: 4px;
+  font-size: 14px; line-height: 20px; color: #fff; text-decoration: none;
+  background: rgba(17, 17, 17, .82); backdrop-filter: blur(6px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
+  transition: background .2s;
+}
+.site-shot__note span { color: rgba(255, 255, 255, .6); }
+.site-shot__note:hover { background: #111; }
+@media (max-width: 600px) { .site-shot__note { right: 8px; bottom: 8px; max-width: calc(100% - 16px); padding: 6px 10px; } }

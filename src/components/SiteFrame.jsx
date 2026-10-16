@@ -42,9 +42,15 @@ export default function SiteFrame({ item, title, className = '', style }) {
         />
       )}
       {blocked === true && (
-        <div className="site-shot" tabIndex={0} aria-label={`${title} (role para ver a página)`}>
-          <img src={item.shot || shotFallback(item.embed)} alt={title} loading="lazy" />
-        </div>
+        <>
+          <div className="site-shot" tabIndex={0} aria-label={`${title} (role para ver a página)`}>
+            <img src={item.shot || shotFallback(item.embed)} alt={title} loading="lazy" />
+          </div>
+          {/* Aviso: é um print, o site de verdade abre em outra aba */}
+          <a className="site-shot__note" href={item.embed} target="_blank" rel="noopener">
+            <span>Captura de tela.</span> Abra o site para ver como ele ficou de verdade ↗
+          </a>
+        </>
       )}
     </div>
   );
