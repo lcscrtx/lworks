@@ -890,7 +890,7 @@ a { color: inherit; }
 }
 .update-modal__x:hover { background: rgba(255, 255, 255, .28); }
 
-.update-modal__body { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 20px 20px; font-size: 14px; line-height: 20px; }
+.update-modal__body { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 20px 20px; font-size: 13px; line-height: 18px; }
 .update-modal__label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: rgba(255, 255, 255, .6); }
 .update-modal__label i { position: relative; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
 .update-modal__label i::after {
@@ -901,7 +901,7 @@ a { color: inherit; }
   background: #fff;
   animation: notice-pulse 1.8s ease-out infinite;
 }
-.update-modal__title { font-size: 24px; line-height: 28px; font-weight: 500; letter-spacing: -.01em; }
+.update-modal__title { font-size: 20px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
 .update-modal__text { margin-top: 8px; color: rgba(255, 255, 255, .6); }
 
 /* Ação ghost: só texto; a linha desenha da esquerda para a direita no hover */

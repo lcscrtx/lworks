@@ -20,6 +20,7 @@ const PLACEHOLDERS = [
 // Elementos que interrompem a trilha (.home__side: coluna de Projects e Tessela, inclusive o espaço entre eles)
 const BLOCKERS = 'a, button, .header, .intro, .home__side, .projects, .tessela-callout, .site-footer';
 // Blocos de texto que nenhuma imagem pode cobrir, nem em parte (o mouse pode estar fora deles e a imagem invadir)
+// Mouse fora do bloco: a imagem é empurrada para fora dele em vez de sumir
 const TEXT_ZONES = '.intro, .home__side';
 const ZONE_GAP = 16; // folga (px) entre a imagem e o texto
 
@@ -45,7 +46,6 @@ export default function ImageTrail({ images = PLACEHOLDERS }) {
         return;
       }
       const p = { x: e.clientX, y: e.clientY };
-      // last só é limpo quando a imagem não pode nascer; assim ela aparece logo ao sair da zona de texto
       if (last.current && Math.hypot(p.x - last.current.x, p.y - last.current.y) < SPACING) return;
       last.current = p;
 
@@ -54,20 +54,34 @@ export default function ImageTrail({ images = PLACEHOLDERS }) {
       const w = Math.sqrt(AREA * ratio);
       const h = w / ratio;
 
-      // A imagem nasce centrada no mouse: se invadir um bloco de texto, não aparece
-      const hitsText = [...document.querySelectorAll(TEXT_ZONES)].some((el) => {
+      // A imagem nasce centrada no mouse; perto de um bloco de texto, é empurrada para fora dele.
+      // Só não aparece se não couber (ex.: no vão estreito entre dois blocos).
+      const zones = [...document.querySelectorAll(TEXT_ZONES)].map((el) => {
         const r = el.getBoundingClientRect();
-        return p.x + w / 2 > r.left - ZONE_GAP && p.x - w / 2 < r.right + ZONE_GAP
-          && p.y + h / 2 > r.top - ZONE_GAP && p.y - h / 2 < r.bottom + ZONE_GAP;
+        return { l: r.left - ZONE_GAP, r: r.right + ZONE_GAP, t: r.top - ZONE_GAP, b: r.bottom + ZONE_GAP };
       });
-      if (hitsText) {
-        last.current = null;
-        return;
+      const hits = (c) => zones.find((z) => c.x + w / 2 > z.l && c.x - w / 2 < z.r && c.y + h / 2 > z.t && c.y - h / 2 < z.b);
+      const pos = { ...p };
+      const zone = hits(pos);
+      if (zone) {
+        // menor deslocamento que tira a imagem do bloco: para a esquerda, direita, cima ou baixo
+        const moves = [
+          { x: zone.l - w / 2, y: pos.y },
+          { x: zone.r + w / 2, y: pos.y },
+          { x: pos.x, y: zone.t - h / 2 },
+          { x: pos.x, y: zone.b + h / 2 }
+        ].sort((a, b) => Math.hypot(a.x - pos.x, a.y - pos.y) - Math.hypot(b.x - pos.x, b.y - pos.y));
+        const fit = moves.find((m) => !hits(m));
+        if (!fit) {
+          last.current = null;
+          return;
+        }
+        Object.assign(pos, fit);
       }
 
       index.current += 1;
       const key = id.current++;
-      setItems((list) => [...list.slice(-(MAX_VISIBLE - 1)), { key, ...p, w, h, src: img.src }]);
+      setItems((list) => [...list.slice(-(MAX_VISIBLE - 1)), { key, ...pos, w, h, src: img.src }]);
       setTimeout(() => setItems((list) => list.filter((i) => i.key !== key)), LIFETIME);
     };
 
