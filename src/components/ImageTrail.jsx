@@ -19,6 +19,9 @@ const PLACEHOLDERS = [
 
 // Elementos que interrompem a trilha (.home__side: coluna de Projects e Tessela, inclusive o espaço entre eles)
 const BLOCKERS = 'a, button, .header, .intro, .home__side, .projects, .tessela-callout, .site-footer';
+// Blocos de texto que nenhuma imagem pode cobrir, nem em parte (o mouse pode estar fora deles e a imagem invadir)
+const TEXT_ZONES = '.intro, .home__side';
+const ZONE_GAP = 16; // folga (px) entre a imagem e o texto
 
 const SPACING = 220;  // distância do mouse (px) entre uma imagem e outra
 const MAX_VISIBLE = 3; // máximo de imagens na tela ao mesmo tempo
@@ -42,16 +45,29 @@ export default function ImageTrail({ images = PLACEHOLDERS }) {
         return;
       }
       const p = { x: e.clientX, y: e.clientY };
+      // last só é limpo quando a imagem não pode nascer; assim ela aparece logo ao sair da zona de texto
       if (last.current && Math.hypot(p.x - last.current.x, p.y - last.current.y) < SPACING) return;
       last.current = p;
 
       const img = images[index.current % images.length];
-      index.current += 1;
       const ratio = ratioOf(img, ratios.current);
       const w = Math.sqrt(AREA * ratio);
-      const key = id.current++;
+      const h = w / ratio;
 
-      setItems((list) => [...list.slice(-(MAX_VISIBLE - 1)), { key, ...p, w, h: w / ratio, src: img.src }]);
+      // A imagem nasce centrada no mouse: se invadir um bloco de texto, não aparece
+      const hitsText = [...document.querySelectorAll(TEXT_ZONES)].some((el) => {
+        const r = el.getBoundingClientRect();
+        return p.x + w / 2 > r.left - ZONE_GAP && p.x - w / 2 < r.right + ZONE_GAP
+          && p.y + h / 2 > r.top - ZONE_GAP && p.y - h / 2 < r.bottom + ZONE_GAP;
+      });
+      if (hitsText) {
+        last.current = null;
+        return;
+      }
+
+      index.current += 1;
+      const key = id.current++;
+      setItems((list) => [...list.slice(-(MAX_VISIBLE - 1)), { key, ...p, w, h, src: img.src }]);
       setTimeout(() => setItems((list) => list.filter((i) => i.key !== key)), LIFETIME);
     };
 

@@ -22,12 +22,18 @@ export default function Home() {
   useLayoutEffect(() => {
     const mark = markRef.current;
     const intro = mark.closest('.intro');
+    const p = mark.closest('p');
     const measure = () => {
-      const box = intro.getBoundingClientRect();
+      // Medido em relação ao parágrafo e somado ao offset dele: a animação de entrada (translateY) não entra na conta
+      const box = p.getBoundingClientRect();
       const lines = [...mark.getClientRects()].slice(0, 2);
       setScribbles(lines.map((r, i) => {
-        const [inset, extra] = i === 0 ? [8, -10] : [-7, 6]; // desenho do Figma: 1º começa depois, 2º sobra à esquerda
-        return { left: r.left - box.left + inset, top: r.bottom - box.top, width: r.width + extra };
+        const [inset, extra] = i === 0 ? [-2, 4] : [-7, 6]; // traço à mão: sobra um pouco nas pontas
+        return {
+          left: p.offsetLeft + r.left - box.left + inset,
+          top: p.offsetTop + r.bottom - box.top - 1, // logo abaixo das descendentes, antes da linha seguinte
+          width: r.width + extra
+        };
       }));
     };
     measure();
@@ -48,7 +54,7 @@ export default function Home() {
             <img src="/assets/lucas.png" alt="Foto de Lucas Cartaxo" width="400" height="400" />
           </span></p>
           <p>Designer, CDO e alguém que gosta de tirar ideias do papel, conectando produto, marca e tecnologia para criar interfaces que fazem sentido em cada detalhe: na aparência, na experiência e no uso.</p>
-          <p>Tenho mais <span ref={markRef}>de 8 anos de experiência entre branding e produtos digitais</span>. Hoje, lidero design, produto e identidade na <u className="ink">ShiftLabs</u>, da estratégia à execução.</p>
+          <p><span ref={markRef}>Tenho mais de 8 anos de experiência entre branding e produtos digitais</span>. Hoje, lidero design, produto e identidade na <u className="ink">ShiftLabs</u>, da estratégia à execução.</p>
           <p>No dia a dia, transito entre marca e produto: crio identidades visuais, desenho interfaces e experiências em UI/UX e ainda coloco a mão na massa no social media, post a post. Também crio e mantenho design systems, incluindo <a href="/tessela" target="_blank" rel="noopener">um que construí do zero</a>.</p>
           <p>E gosto de construir. Desenvolvo o front-end das minhas próprias interfaces, tiro produtos do papel e entendo como a engenharia funciona por trás. <span className="tool"><img src="/assets/claude.svg" alt="" />Claude</span> e <span className="tool"><img src="/assets/openai.svg" alt="" />Codex</span> fazem parte do meu processo e me ajudam a aproximar o que imagino do que chega às mãos das pessoas.</p>
           <p>Estou em João Pessoa, Paraíba. Você me encontra no <a href="https://www.linkedin.com/in/lucas-cartaxo-015152181/" target="_blank" rel="noopener">LinkedIn</a> ou pelo <a href="https://www.instagram.com/lworks.co/" target="_blank" rel="noopener">Instagram</a><span className="ink">.</span></p>
