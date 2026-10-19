@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { ProjectsProvider } from '@/lib/projectsStore';
 import { PagesProvider } from '@/lib/pagesStore';
 import Header from '@/components/Header';
@@ -43,6 +44,8 @@ export default function App() {
           </Routes>
         </PagesProvider>
       </ProjectsProvider>
+      {/* Vercel Web Analytics: visitas e páginas vistas (só conta no site publicado na Vercel) */}
+      <Analytics />
     </BrowserRouter>
   );
 }
