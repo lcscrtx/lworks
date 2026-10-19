@@ -125,6 +125,7 @@ a { color: inherit; }
 
 /* Chamada do Tessela, abaixo de Projects */
 .home__side { display: flex; flex-direction: column; gap: 56px; }
+.home__side .projects { align-self: flex-start; } /* largura da lista, não da chamada: o preview abre 40px depois dela */
 .tessela-callout {
   position: relative;
   z-index: 1;
@@ -563,9 +564,7 @@ a { color: inherit; }
 }
 
 /* Sublinhados feitos à mão (Figma: Vector 1 e Vector 2) */
-.scribble { position: absolute; display: block; max-width: none; pointer-events: none; }
-.scribble--1 { left: 71.17px; top: 143.22px; }
-.scribble--2 { left: -7.14px; top: 159.9px; }
+.scribble { position: absolute; display: block; max-width: none; pointer-events: none; } /* posição vem de Home.jsx */
 
 /* Marca gigante com Tech Text (React Bits) */
 /*
@@ -766,3 +765,180 @@ a { color: inherit; }
 .site-shot__note span { color: rgba(255, 255, 255, .6); }
 .site-shot__note:hover { background: #111; }
 @media (max-width: 600px) { .site-shot__note { right: 8px; bottom: 8px; max-width: calc(100% - 16px); padding: 6px 10px; } }
+
+/* Aviso de site em atualização (UpdateNotice): cartão escuro no canto, no mesmo tom do aviso de captura */
+.update-notice {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 60;
+  width: min(304px, 100% - 48px);
+  padding: 14px 16px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #fff;
+  background: rgba(17, 17, 17, .88);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
+  animation: text-in .8s cubic-bezier(.2, .7, .2, 1) 1.4s backwards;
+}
+.update-notice.is-leaving { animation: notice-out .3s cubic-bezier(.4, 0, 1, 1) forwards; }
+@keyframes notice-out { to { opacity: 0; transform: translateY(8px); filter: blur(4px); } }
+
+.update-notice__label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: rgba(255, 255, 255, .6); }
+.update-notice__label i {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.update-notice__label i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #fff;
+  animation: notice-pulse 1.8s ease-out infinite;
+}
+@keyframes notice-pulse { to { transform: scale(2.6); opacity: 0; } }
+
+.update-notice__close {
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.update-notice__close:hover { opacity: .5; }
+.update-notice__close:focus-visible { outline: 1px solid #fff; outline-offset: 3px; }
+
+@media (max-width: 600px) {
+  .update-notice { left: var(--gutter); right: var(--gutter); bottom: var(--gutter); width: auto; }
+  .update-notice__close { padding: 6px 0; margin-bottom: -6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .update-notice, .update-notice.is-leaving { animation-duration: .01s; animation-delay: 0s; }
+  .update-notice__label i::after { animation: none; }
+}
+
+/* Modal de site em atualização (UpdateModal): cartão branco sobre fundo escurecido, imagens dos projetos no topo */
+.update-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  background: rgba(0, 0, 0, .4);
+  animation: modal-fade .4s ease .5s backwards;
+}
+.update-modal.is-leaving { animation: modal-fade .25s ease reverse forwards; }
+@keyframes modal-fade { from { opacity: 0; } }
+
+.update-modal__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: min(320px, 100%);
+  min-height: 380px;
+  overflow: hidden;
+  border-radius: 8px;
+  color: #fff;
+  background: #000;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .06), 0 20px 60px rgba(0, 0, 0, .3);
+  animation: text-in .7s cubic-bezier(.2, .7, .2, 1) .6s backwards;
+  --rise: 16px;
+}
+.update-modal.is-leaving .update-modal__card { animation: modal-card-out .25s cubic-bezier(.4, 0, 1, 1) forwards; }
+@keyframes modal-card-out { to { opacity: 0; transform: translateY(8px) scale(.98); } }
+
+/* Fundo: Gradient ASCII (React Bits) que desce até o preto */
+.update-modal__media { position: absolute; inset: 0 0 auto; height: 75%; background: #0b0b14; }
+.update-modal__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(0, 0, 0, .55) 65%, #000);
+}
+
+/* Fechar: vidro fosco no canto */
+.update-modal__x {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .25);
+  border-radius: 6px;
+  color: #fff;
+  background: rgba(255, 255, 255, .16);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: background .2s;
+}
+.update-modal__x:hover { background: rgba(255, 255, 255, .28); }
+
+.update-modal__body { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 20px 20px; font-size: 14px; line-height: 20px; }
+.update-modal__label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: rgba(255, 255, 255, .6); }
+.update-modal__label i { position: relative; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+.update-modal__label i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #fff;
+  animation: notice-pulse 1.8s ease-out infinite;
+}
+.update-modal__title { font-size: 24px; line-height: 28px; font-weight: 500; letter-spacing: -.01em; }
+.update-modal__text { margin-top: 8px; color: rgba(255, 255, 255, .6); }
+
+/* Ação ghost: só texto; a linha desenha da esquerda para a direita no hover */
+.update-modal__cta {
+  position: relative;
+  margin-top: 20px;
+  padding: 0 0 2px;
+  border: 0;
+  font: inherit;
+  color: #fff;
+  background: none;
+  cursor: pointer;
+}
+.update-modal__cta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .35s cubic-bezier(.65, 0, .35, 1);
+}
+.update-modal__cta:hover::after, .update-modal__cta:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+.update-modal__cta span { display: inline-block; margin-left: 4px; transition: transform .25s cubic-bezier(.2, .7, .2, 1); }
+.update-modal__cta:hover span { transform: translateX(3px); }
+.update-modal__card:focus, .update-modal__cta:focus-visible { outline: none; }
+.update-modal__x:focus-visible { outline: 1px solid #fff; outline-offset: 3px; }
+
+@media (max-width: 600px) {
+  .update-modal { place-items: end center; }
+  .update-modal__card { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .update-modal, .update-modal__card, .update-modal.is-leaving, .update-modal.is-leaving .update-modal__card { animation-duration: .01s; animation-delay: 0s; }
+  .update-modal__label i::after { animation: none; }
+  .update-modal__cta::after, .update-modal__cta span { transition: none; }
+}

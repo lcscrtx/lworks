@@ -3,6 +3,7 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { ProjectsProvider } from '@/lib/projectsStore';
 import { PagesProvider } from '@/lib/pagesStore';
 import Header from '@/components/Header';
+import UpdateModal from '@/components/UpdateModal';
 import Home from '@/pages/Home';
 import Category from '@/pages/Category';
 import Project from '@/pages/Project';
@@ -18,6 +19,7 @@ const SiteLayout = () => (
   <>
     <Header />
     <Outlet />
+    <UpdateModal />
   </>
 );
 

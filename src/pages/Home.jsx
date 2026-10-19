@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Footer from '@/components/Footer';
 import ImageTrail from '@/components/ImageTrail';
 import Projects from '@/components/Projects';
@@ -16,6 +16,27 @@ export default function Home() {
     return all.length ? mixByProject(all) : undefined;
   }, [categories]);
 
+  // Rabiscos sob o trecho marcado: um por linha, medidos no texto para acompanhar a quebra de linha
+  const markRef = useRef(null);
+  const [scribbles, setScribbles] = useState([]);
+  useLayoutEffect(() => {
+    const mark = markRef.current;
+    const intro = mark.closest('.intro');
+    const measure = () => {
+      const box = intro.getBoundingClientRect();
+      const lines = [...mark.getClientRects()].slice(0, 2);
+      setScribbles(lines.map((r, i) => {
+        const [inset, extra] = i === 0 ? [8, -10] : [-7, 6]; // desenho do Figma: 1º começa depois, 2º sobra à esquerda
+        return { left: r.left - box.left + inset, top: r.bottom - box.top, width: r.width + extra };
+      }));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(intro);
+    document.fonts?.ready.then(measure);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <>
       <ImageTrail images={trail} />
@@ -27,13 +48,14 @@ export default function Home() {
             <img src="/assets/lucas.png" alt="Foto de Lucas Cartaxo" width="400" height="400" />
           </span></p>
           <p>Designer, CDO e alguém que gosta de tirar ideias do papel, conectando produto, marca e tecnologia para criar interfaces que fazem sentido em cada detalhe: na aparência, na experiência e no uso.</p>
-          <p>Tenho mais de 8 anos de experiência entre branding e produtos digitais. Hoje, lidero design, produto e identidade na <u className="ink">ShiftLabs</u>, da estratégia à execução.</p>
+          <p>Tenho mais <span ref={markRef}>de 8 anos de experiência entre branding e produtos digitais</span>. Hoje, lidero design, produto e identidade na <u className="ink">ShiftLabs</u>, da estratégia à execução.</p>
           <p>No dia a dia, transito entre marca e produto: crio identidades visuais, desenho interfaces e experiências em UI/UX e ainda coloco a mão na massa no social media, post a post. Também crio e mantenho design systems, incluindo <a href="/tessela" target="_blank" rel="noopener">um que construí do zero</a>.</p>
           <p>E gosto de construir. Desenvolvo o front-end das minhas próprias interfaces, tiro produtos do papel e entendo como a engenharia funciona por trás. <span className="tool"><img src="/assets/claude.svg" alt="" />Claude</span> e <span className="tool"><img src="/assets/openai.svg" alt="" />Codex</span> fazem parte do meu processo e me ajudam a aproximar o que imagino do que chega às mãos das pessoas.</p>
           <p>Estou em João Pessoa, Paraíba. Você me encontra no <a href="https://www.linkedin.com/in/lucas-cartaxo-015152181/" target="_blank" rel="noopener">LinkedIn</a> ou pelo <a href="https://www.instagram.com/lworks.co/" target="_blank" rel="noopener">Instagram</a><span className="ink">.</span></p>
 
-          <img className="scribble scribble--1" src="/assets/underline-1.svg" width="202.865" height="1.22848" alt="" />
-          <img className="scribble scribble--2" src="/assets/underline-2.svg" width="96.958" height="1.176" alt="" />
+          {scribbles.map((s, i) => (
+            <img key={i} className={`scribble scribble--${i + 1}`} src={`/assets/underline-${i + 1}.svg`} height="1.2" alt="" style={s} />
+          ))}
         </div>
 
         <div className="home__side">
