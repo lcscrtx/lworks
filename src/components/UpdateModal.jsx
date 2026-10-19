@@ -21,6 +21,7 @@ export default function UpdateModal() {
   const close = () => {
     try { sessionStorage.setItem(KEY, 'closed'); } catch { /* sem storage: só fecha */ }
     setLeaving(true);
+    setTimeout(() => setOpen(false), 400); // garantia: sai da página mesmo se o animationend não vier
   };
 
   useEffect(() => {

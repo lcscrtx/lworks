@@ -839,8 +839,10 @@ a { color: inherit; }
   background: rgba(0, 0, 0, .4);
   animation: modal-fade .4s ease .5s backwards;
 }
-.update-modal.is-leaving { animation: modal-fade .25s ease reverse forwards; }
+/* Saída com keyframe próprio: reusar modal-fade em reverse não reinicia a animação e o animationend nunca vem */
+.update-modal.is-leaving { pointer-events: none; animation: modal-fade-out .25s ease forwards; }
 @keyframes modal-fade { from { opacity: 0; } }
+@keyframes modal-fade-out { to { opacity: 0; } }
 
 .update-modal__card {
   position: relative;
