@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import { ProjectsProvider } from '@/lib/projectsStore';
 import { PagesProvider } from '@/lib/pagesStore';
@@ -12,17 +12,23 @@ import About from '@/pages/About';
 import Works from '@/pages/Works';
 import Contact from '@/pages/Contact';
 import Playground from '@/pages/Playground';
+import Stories from '@/pages/Stories';
+import Story from '@/pages/Story';
 
 // O painel só é baixado quando alguém abre /admin
 const Admin = lazy(() => import('@/pages/admin/Admin'));
 
-const SiteLayout = () => (
-  <>
-    <Header />
-    <Outlet />
-    <UpdateModal />
-  </>
-);
+const SiteLayout = () => {
+  // Quem chega direto num artigo (link de divulgação) lê sem o aviso por cima
+  const { pathname } = useLocation();
+  return (
+    <>
+      <Header />
+      <Outlet />
+      {!pathname.startsWith('/stories/') && <UpdateModal />}
+    </>
+  );
+};
 
 export default function App() {
   return (
@@ -37,6 +43,8 @@ export default function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/playground" element={<Playground />} />
+              <Route path="/stories" element={<Stories />} />
+              <Route path="/stories/:slug" element={<Story />} />
               <Route path="/projects/:id" element={<Category />} />
               <Route path="/projects/:id/:slug" element={<Project />} />
               <Route path="*" element={<Home />} />

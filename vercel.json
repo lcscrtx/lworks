@@ -4,6 +4,12 @@
   "functions": {
     "api/site.js": { "maxDuration": 60 }
   },
+  "headers": [
+    {
+      "source": "/stories/:story/demo/:file",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    }
+  ],
   "rewrites": [
     { "source": "/tessela", "destination": "/tessela/index.html" },
     { "source": "/tessela/:path*", "destination": "/tessela/index.html" },
