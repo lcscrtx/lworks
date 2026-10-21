@@ -1007,8 +1007,8 @@ a { color: inherit; }
 /* Versão navegável: chamada no fim do artigo e modal de senha */
 .demo-banner {
   position: relative; isolation: isolate; overflow: hidden;
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: end; gap: 32px;
-  min-height: 460px; margin-top: 96px; padding: 48px 0 0 48px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: start; gap: 32px;
+  margin-top: 96px; padding: 56px 0 0 56px;
   color: #fff; background: #000; border-radius: 10px;
 }
 /* Fundo: o mesmo Gradient ASCII do aviso do site, apagando para o preto */
@@ -1018,7 +1018,7 @@ a { color: inherit; }
   background: linear-gradient(100deg, #000 30%, rgba(0, 0, 0, .55) 62%, rgba(0, 0, 0, .15)),
               linear-gradient(to top, #000 0%, transparent 45%);
 }
-.demo-banner__copy { align-self: center; padding-bottom: 48px; max-width: 420px; }
+.demo-banner__copy { padding-bottom: 56px; max-width: 420px; }
 .demo-banner__label {
   display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px;
   font-size: 13px; line-height: 18px; color: rgba(255, 255, 255, .8);
@@ -1041,14 +1041,15 @@ a { color: inherit; }
 .demo-banner__note { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255, 255, 255, .5); }
 
 /* Prévia: painel saindo pela borda e o celular na frente */
-.demo-banner__visual { position: relative; align-self: stretch; min-height: 380px; }
+/* Selo, painel e celular começam na mesma linha do topo */
+.demo-banner__visual { position: relative; align-self: stretch; min-height: 360px; }
 .demo-banner__desktop {
-  position: absolute; left: 0; bottom: -2px; width: 118%; max-width: none;
+  position: absolute; left: 0; top: 0; width: 140%; max-width: none;
   border: 1px solid rgba(255, 255, 255, .14); border-bottom: 0; border-radius: 10px 0 0 0;
   box-shadow: 0 -20px 60px -20px rgba(0, 0, 0, .8);
 }
 .demo-banner__phone {
-  position: absolute; left: -8%; bottom: 24px; width: 34%;
+  position: absolute; left: -8%; top: 0; width: 30%;
   padding: 5px; background: #111; border-radius: 15% / 7%;
   box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .9), 0 0 0 1px rgba(255, 255, 255, .1);
 }

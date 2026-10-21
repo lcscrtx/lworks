@@ -120,7 +120,7 @@ export default function Story() {
                 Abra o Menux e navegue você mesmo
               </h2>
               <p className="demo-banner__text">
-                Painel e cardápio funcionando, com um restaurante fictício.
+                Painel e cardápio funcionando,<br />com um restaurante fictício.
               </p>
               <div className="demo-banner__actions">
                 <DemoGate demo={article.demo} className="demo-banner__cta" />
