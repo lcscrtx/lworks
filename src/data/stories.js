@@ -204,15 +204,6 @@ export const articles = [
     date: 'Outubro de 2026',
     readTime: '5 min de leitura',
     cover: `${T}/ts-dashboard-menux.webp`,
-    demo: {
-      label: 'Catálogo ao vivo',
-      title: 'Explore o Tessela por dentro',
-      text: ['Componentes, modelos de tela e marcas,', 'com o código de verdade rodando.'],
-      href: '/tessela',
-      cta: 'Abrir o catálogo',
-      note: 'Abre em outra aba',
-      preview: { desktop: `${T}/ts-modelos.webp` }
-    },
     hero: { desktop: `${T}/ts-inicio.webp`, desktopAlt: 'Página inicial do catálogo do Tessela' },
     lead: [
       'O Tessela Web é o design system dos painéis e backoffices da ShiftLabs. São mais de 50 componentes React, acessíveis e em português, com tokens que viram a marca de cada produto: o mesmo código veste o Menux, o Contto e o Cortex.',
