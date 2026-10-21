@@ -120,8 +120,7 @@ export default function Story() {
                 Abra o Menux e navegue você mesmo
               </h2>
               <p className="demo-banner__text">
-                O painel do restaurante e o cardápio do cliente funcionando de verdade, com a Osteria Dona Gema,
-                restaurante fictício deste artigo. Edite um prato, monte uma pizza, converse com o Maestro.
+                Painel e cardápio funcionando, com um restaurante fictício.
               </p>
               <div className="demo-banner__actions">
                 <DemoGate demo={article.demo} className="demo-banner__cta" />
