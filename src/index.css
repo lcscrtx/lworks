@@ -1014,6 +1014,13 @@ a { color: inherit; }
 .article__hero { position: relative; padding-right: 120px; margin-bottom: 64px; }
 .article__hero .screen--phone { position: absolute; right: 0; bottom: -32px; width: 230px; }
 
+.article__hero.is-solo { padding-right: 0; margin-bottom: 48px; }
+
+/* Telas do painel em grade de duas colunas, com um rótulo curto embaixo de cada uma */
+.article__screens { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+.article__screen p { margin-top: 10px; font-size: 14px; line-height: 20px; }
+@media (max-width: 600px) { .article__screens { grid-template-columns: 1fr; gap: 20px; } }
+
 .article__intro { display: grid; grid-template-columns: 1fr 243px; gap: 64px; margin-bottom: 24px; }
 .article__lead p { font-size: 20px; line-height: 30px; letter-spacing: -.01em; text-wrap: pretty; }
 .article__lead p + p { margin-top: 18px; }
@@ -1079,6 +1086,8 @@ a { color: inherit; }
   box-shadow: 0 10px 30px -10px rgba(255, 255, 255, .45);
   transition: transform .3s cubic-bezier(.2, .7, .2, 1), box-shadow .3s;
 }
+a.demo-banner__cta { text-decoration: none; }
+.demo-banner__visual.is-solo .demo-banner__desktop { width: 120%; }
 .demo-banner__cta span { transition: transform .3s cubic-bezier(.2, .7, .2, 1); }
 .demo-banner__cta:hover { transform: translateY(-2px); box-shadow: 0 16px 36px -12px rgba(255, 255, 255, .55); }
 .demo-banner__cta:hover span { transform: translateX(3px); }

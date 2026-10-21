@@ -10,10 +10,16 @@
                { type: 'text', heading?, body: ['parágrafo'] }
                { type: 'desktop', src, alt, caption? }        → tela do painel
                { type: 'phones', items: [{ src, alt }], caption? } → telas do celular
+               { type: 'screens', items: [{ src, alt, label? }], caption? } → telas do painel em grade de 2
                { type: 'quote', text }
+    hero     → { desktop, desktopAlt, phone?, phoneAlt? }
+    demo     → banner do fim: { label, title, text: [linhas], preview: { desktop, phone? } }
+               com senha: { password, links: [{ label, hint, href }] }
+               sem senha: { href, cta, note? }
 */
 
 const M = '/stories/menux';
+const T = '/stories/tessela';
 const DESKTOP = 1440 / 900;
 const PHONE = 390 / 844; // capturas na tela do iPhone 14 (3x)
 
@@ -27,6 +33,9 @@ export const articles = [
     cover: `${M}/dash-categorias.webp`,
     // Versão navegável, atrás de uma senha simples (verificada no navegador, sem cadastro)
     demo: {
+      label: 'Versão navegável',
+      title: 'Abra o Menux e navegue você mesmo',
+      text: ['Painel e cardápio funcionando,', 'com um restaurante fictício.'],
       password: '1234',
       preview: { desktop: `${M}/dash-produtos.webp`, phone: `${M}/app-prato.webp` },
       links: [
@@ -34,7 +43,10 @@ export const articles = [
         { label: 'Cardápio no celular', hint: 'Melhor no celular ou com a janela estreita', href: `${M}/demo/cardapio.html` }
       ]
     },
-    hero: { desktop: `${M}/dash-categorias.webp`, phone: `${M}/app-inicio.webp` },
+    hero: {
+      desktop: `${M}/dash-categorias.webp`, desktopAlt: 'Painel do restaurante',
+      phone: `${M}/app-inicio.webp`, phoneAlt: 'Cardápio no celular'
+    },
     lead: [
       'O Menux é um cardápio digital com um assistente de IA, o Maestro. O cliente escaneia o QR Code da mesa, conversa sobre o que tem vontade de comer e recebe sugestões a partir do que a cozinha realmente serve. O dono do restaurante cuida de tudo isso por um painel feito para quem não tem tempo sobrando.',
       'Desenhei as duas pontas do produto: o painel do restaurante e a experiência no celular de quem está sentado à mesa. Este texto conta as decisões por trás delas.'
@@ -182,6 +194,145 @@ export const articles = [
           'Projetar e construir na mesma cabeça encurta o caminho. Cada decisão tomada no Figma foi testada em código de verdade com o Claude, em telas que funcionam, navegam e respondem como o produto final.',
           'Isso permitiu validar fluxos inteiros (cadastro de um vinho, montagem de uma pizza, uma conversa com o Maestro) antes de qualquer discussão sobre detalhe visual. E fez do design uma parte da construção, não uma etapa anterior a ela.'
         ]
+      }
+    ]
+  },
+  {
+    slug: 'tessela',
+    kicker: 'Design system',
+    title: 'Tessela: peça por peça, o painel inteiro',
+    date: 'Outubro de 2026',
+    readTime: '5 min de leitura',
+    cover: `${T}/ts-dashboard-menux.webp`,
+    demo: {
+      label: 'Catálogo ao vivo',
+      title: 'Explore o Tessela por dentro',
+      text: ['Componentes, modelos de tela e marcas,', 'com o código de verdade rodando.'],
+      href: '/tessela',
+      cta: 'Abrir o catálogo',
+      note: 'Abre em outra aba',
+      preview: { desktop: `${T}/ts-modelos.webp` }
+    },
+    hero: { desktop: `${T}/ts-inicio.webp`, desktopAlt: 'Página inicial do catálogo do Tessela' },
+    lead: [
+      'O Tessela Web é o design system dos painéis e backoffices da ShiftLabs. São mais de 50 componentes React, acessíveis e em português, com tokens que viram a marca de cada produto: o mesmo código veste o Menux, o Contto e o Cortex.',
+      'Construí do zero, da escala de cinza à publicação no npm. Este texto conta as decisões que fazem ele funcionar em produtos tão diferentes.'
+    ],
+    facts: [
+      { label: 'Produto', value: 'Tessela Web · ShiftLabs' },
+      { label: 'Ano', value: '2026' },
+      { label: 'Papel', value: 'Design system, UI e front-end' },
+      { label: 'Ferramentas', value: 'Figma e Claude' }
+    ],
+    blocks: [
+      {
+        type: 'text',
+        heading: 'Por que um design system',
+        body: [
+          'A ShiftLabs tem vários produtos, e quase todos têm um painel por trás: cardápio, atendimento, finanças. Sem uma base comum, cada painel reinventaria a mesma tabela, o mesmo seletor de datas e a mesma barra lateral, com pequenas diferenças que quem usa sente e ninguém documenta.',
+          'O Tessela nasceu com uma regra simples. Quando uma tela precisa de algo que não existe, a peça nasce no design system, com teste e página no catálogo, e só depois chega ao produto.'
+        ]
+      },
+      { type: 'quote', text: 'Os produtos se adaptam ao Tessela, nunca o contrário.' },
+      {
+        type: 'text',
+        heading: 'Uma estrutura, várias marcas',
+        body: [
+          'A estrutura dos componentes é fixa. O que muda de um produto para outro são os tokens de marca: cor, família tipográfica, pesos, raio e borda. Cada produto ganha o seu pacote, como o @tessela/menux, e trocar a marca troca o painel inteiro sem tocar em um componente.',
+          'Isso permite que um produto novo comece com um painel completo no primeiro dia, já com a cara dele.'
+        ]
+      },
+      {
+        type: 'screens',
+        items: [
+          { src: `${T}/ts-dashboard.webp`, alt: 'Modelo de painel na marca Padrão', label: 'Padrão' },
+          { src: `${T}/ts-dashboard-menux.webp`, alt: 'Modelo de painel na marca Menux', label: 'Menux' },
+          { src: `${T}/ts-dashboard-contto.webp`, alt: 'Modelo de painel na marca Contto', label: 'Contto' },
+          { src: `${T}/ts-dashboard-cortex.webp`, alt: 'Modelo de painel na marca Cortex', label: 'Cortex' }
+        ],
+        caption: 'O mesmo modelo de painel em quatro marcas. Só os tokens mudam.'
+      },
+      {
+        type: 'text',
+        heading: 'Neutro por padrão',
+        body: [
+          'O tema padrão é monocromático: preto no claro, branco no escuro. A cor aparece só para dizer alguma coisa, como erro, sucesso, aviso ou informação. Assim a marca de cada produto entra por cima de uma base que não compete com ela.',
+          'Claro e escuro existem desde o primeiro componente, assim como duas densidades, confortável e compacta. Deixar isso para depois custaria refazer tudo.'
+        ]
+      },
+      {
+        type: 'desktop',
+        src: `${T}/ts-dashboard-escuro.webp`,
+        alt: 'Modelo de painel no tema escuro',
+        caption: 'O mesmo painel no tema escuro, sem nenhuma cor escrita à mão.'
+      },
+      {
+        type: 'text',
+        heading: 'Só tokens',
+        body: [
+          'Toda cor, raio, borda, espaço e texto vem de um token. Nenhum componente tem cor literal ou número fora da escala: um valor novo entra primeiro no arquivo de tokens e só então vai para o código. Os pares de cor passam por uma verificação de contraste automática.',
+          'Quando uma decisão fugiu da regra, como a borda mais clara dos campos em repouso, ela ficou escrita com o motivo e com o caminho para voltar atrás.'
+        ]
+      },
+      {
+        type: 'screens',
+        items: [
+          { src: `${T}/ts-fundacao.webp`, alt: 'Página de fundação com escalas e tokens', label: 'Fundação' },
+          { src: `${T}/ts-cores.webp`, alt: 'Página de cores com as escalas de cada tom', label: 'Cores' }
+        ],
+        caption: 'Fundação e cores: as escalas de onde sai todo valor do sistema.'
+      },
+      {
+        type: 'text',
+        heading: 'Acessível e em português',
+        body: [
+          'Por baixo, o Base UI cuida da mecânica de interação: teclado, foco, ARIA e posicionamento. O visual, a anatomia e a API são do Tessela, e o produto nunca importa o Base UI direto.',
+          'Os textos já vêm em português e podem ser trocados; inglês e espanhol estão no dicionário. Datas, números e moeda seguem a localidade. Com ponteiro grosso, todo alvo de toque chega a 44 px.'
+        ]
+      },
+      {
+        type: 'desktop',
+        src: `${T}/ts-button.webp`,
+        alt: 'Página do componente Button com variações e estados',
+        caption: 'Cada componente tem a sua página, com variações, estados e o código.'
+      },
+      {
+        type: 'text',
+        heading: 'O catálogo é o código',
+        body: [
+          'O catálogo não é uma recriação dos componentes: ele renderiza o código real. Cada peça só era dada como pronta depois de revisada ali, no navegador, nos dois temas e nas duas densidades.',
+          'Além dos componentes, o catálogo traz 15 modelos de tela de admin, como lista, detalhe, formulário e configurações. Cada um pode ser copiado para o projeto com um comando e vira ponto de partida.'
+        ]
+      },
+      {
+        type: 'screens',
+        items: [
+          { src: `${T}/ts-lista.webp`, alt: 'Modelo de lista de pedidos', label: 'Lista' },
+          { src: `${T}/ts-detalhe.webp`, alt: 'Modelo de detalhe de pedido', label: 'Detalhe' },
+          { src: `${T}/ts-formulario.webp`, alt: 'Modelo de formulário de produto', label: 'Formulário' },
+          { src: `${T}/ts-configuracoes.webp`, alt: 'Modelo de configurações', label: 'Configurações' }
+        ],
+        caption: 'Alguns dos 15 modelos de tela, montados só com peças do Tessela.'
+      },
+      {
+        type: 'desktop',
+        src: `${T}/ts-graficos.webp`,
+        alt: 'Página de gráficos do catálogo',
+        caption: 'Gráficos com a mesma linguagem do resto, e os dados também em tabela para quem não enxerga a curva.'
+      },
+      {
+        type: 'text',
+        heading: 'Do código ao npm',
+        body: [
+          'A primeira versão foi publicada no npm em 25 de setembro. Em cinco dias o sistema chegou à 2.3.0, puxado pelo uso real: o painel do Menux migrou para o Tessela, e cada lacuna encontrada nessa migração virou uma peça nova ou uma propriedade nova aqui, nunca um ajuste local no produto.',
+          'Construí com o Claude, e durante a construção os tokens do repositório viraram a fonte da verdade: a aprovação acontecia no catálogo, com o componente funcionando, e não numa imagem estática. O Figma passa a ser reconstruído a partir deles.'
+        ]
+      },
+      {
+        type: 'desktop',
+        src: `${M}/dash-produtos.webp`,
+        alt: 'Painel de produtos do Menux construído com o Tessela',
+        caption: 'O painel do Menux, construído com o Tessela na marca Menux.'
       }
     ]
   }
