@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import Lightbox from '@/components/Lightbox';
 import DemoGate from '@/components/DemoGate';
+import GradientASCII from '@/components/GradientASCII';
 import { useTitle } from '@/lib/useTitle';
 import { articles, RATIOS } from '@/data/stories';
 
@@ -108,12 +109,36 @@ export default function Story() {
         })}
 
         {article.demo && (
-          <section className="article__demo">
-            <div>
-              <h2>Veja funcionando</h2>
-              <p>O painel e o cardápio navegáveis, com o restaurante fictício deste artigo.</p>
+          <section className="demo-banner" aria-labelledby="demo-banner-title">
+            <div className="demo-banner__bg" aria-hidden="true">
+              <GradientASCII cellSize={12} />
             </div>
-            <DemoGate demo={article.demo} />
+
+            <div className="demo-banner__copy">
+              <p className="demo-banner__label"><i aria-hidden="true" />Versão navegável</p>
+              <h2 id="demo-banner-title" className="demo-banner__title">
+                Abra o Menux e navegue você mesmo
+              </h2>
+              <p className="demo-banner__text">
+                O painel do restaurante e o cardápio do cliente funcionando de verdade, com a Osteria Dona Gema,
+                restaurante fictício deste artigo. Edite um prato, monte uma pizza, converse com o Maestro.
+              </p>
+              <div className="demo-banner__actions">
+                <DemoGate demo={article.demo} className="demo-banner__cta" />
+                <span className="demo-banner__note">
+                  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                    <rect x="2" y="5.5" width="8" height="5.5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.2" />
+                    <path d="M4 5.5V4a2 2 0 0 1 4 0v1.5" fill="none" stroke="currentColor" strokeWidth="1.2" />
+                  </svg>
+                  Acesso com senha
+                </span>
+              </div>
+            </div>
+
+            <div className="demo-banner__visual" aria-hidden="true">
+              <img className="demo-banner__desktop" src={article.demo.preview.desktop} alt="" loading="lazy" />
+              <img className="demo-banner__phone" src={article.demo.preview.phone} alt="" loading="lazy" />
+            </div>
           </section>
         )}
 

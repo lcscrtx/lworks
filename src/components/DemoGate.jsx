@@ -12,7 +12,7 @@ const wasUnlocked = () => {
   try { return sessionStorage.getItem(KEY) === '1'; } catch { return false; }
 };
 
-export default function DemoGate({ demo }) {
+export default function DemoGate({ demo, className = 'demo-cta' }) {
   const [open, setOpen] = useState(false);
   const [unlocked, setUnlocked] = useState(wasUnlocked);
   const [value, setValue] = useState('');
@@ -47,7 +47,7 @@ export default function DemoGate({ demo }) {
 
   return (
     <>
-      <button type="button" className="demo-cta" onClick={() => setOpen(true)}>
+      <button type="button" className={className} onClick={() => setOpen(true)}>
         Ver como ficou <span aria-hidden="true">→</span>
       </button>
 

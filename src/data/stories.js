@@ -28,6 +28,7 @@ export const articles = [
     // Versão navegável, atrás de uma senha simples (verificada no navegador, sem cadastro)
     demo: {
       password: '1234',
+      preview: { desktop: `${M}/dash-produtos.webp`, phone: `${M}/app-prato.webp` },
       links: [
         { label: 'Painel do restaurante', hint: 'Melhor no computador', href: `${M}/demo/painel.html` },
         { label: 'Cardápio no celular', hint: 'Melhor no celular ou com a janela estreita', href: `${M}/demo/cardapio.html` }
