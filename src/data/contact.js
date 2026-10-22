@@ -20,7 +20,7 @@ export const contact = {
       href: `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSAPP_MSG)}`
     },
     { label: 'Instagram', value: '@lworks.co', href: 'https://www.instagram.com/lworks.co/' },
-    { label: 'LinkedIn', value: 'Lucas Cartaxo', href: 'https://www.linkedin.com/in/lucas-cartaxo-015152181/' },
+    { label: 'LinkedIn', value: 'Lucas Cartaxo', href: 'https://www.linkedin.com/in/lucascartaxodesign/' },
     { label: 'E-mail', value: EMAIL, href: `mailto:${EMAIL}`, copy: true },
     { label: 'Base', value: 'João Pessoa, Paraíba — Brasil' }
   ]

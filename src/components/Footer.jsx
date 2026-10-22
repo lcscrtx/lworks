@@ -3,7 +3,7 @@ import TechText from '@/components/TechText';
 import { useCategories } from '@/lib/projectsStore';
 
 const EMAIL = 'lucascartaaxo@gmail.com';
-const LINKEDIN = 'https://www.linkedin.com/in/lucas-cartaxo-015152181/';
+const LINKEDIN = 'https://www.linkedin.com/in/lucascartaxodesign/';
 const INSTAGRAM = 'https://www.instagram.com/lworks.co/';
 
 const SERVICES = [

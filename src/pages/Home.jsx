@@ -57,7 +57,7 @@ export default function Home() {
           <p><span ref={markRef}>Tenho mais de 8 anos de experiência entre branding e produtos digitais</span>. Hoje, lidero design, produto e identidade na <u className="ink">ShiftLabs</u>, da estratégia à execução.</p>
           <p>No dia a dia, transito entre marca e produto: crio identidades visuais, desenho interfaces e experiências em UI/UX e ainda coloco a mão na massa no social media, post a post. Também crio e mantenho design systems, incluindo <a href="/tessela" target="_blank" rel="noopener">um que construí do zero</a>.</p>
           <p>E gosto de construir. Desenvolvo o front-end das minhas próprias interfaces, tiro produtos do papel e entendo como a engenharia funciona por trás. <span className="tool"><img src="/assets/claude.svg" alt="" />Claude</span> e <span className="tool"><img src="/assets/openai.svg" alt="" />Codex</span> fazem parte do meu processo e me ajudam a aproximar o que imagino do que chega às mãos das pessoas.</p>
-          <p>Estou em João Pessoa, Paraíba. Você me encontra no <a href="https://www.linkedin.com/in/lucas-cartaxo-015152181/" target="_blank" rel="noopener">LinkedIn</a> ou pelo <a href="https://www.instagram.com/lworks.co/" target="_blank" rel="noopener">Instagram</a><span className="ink">.</span></p>
+          <p>Estou em João Pessoa, Paraíba. Você me encontra no <a href="https://www.linkedin.com/in/lucascartaxodesign/" target="_blank" rel="noopener">LinkedIn</a> ou pelo <a href="https://www.instagram.com/lworks.co/" target="_blank" rel="noopener">Instagram</a><span className="ink">.</span></p>
 
           {scribbles.map((s, i) => (
             <img key={i} className={`scribble scribble--${i + 1}`} src={`/assets/underline-${i + 1}.svg`} height="1.2" alt="" style={s} />
