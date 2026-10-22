@@ -44,12 +44,46 @@ function localApi() {
   };
 }
 
+// Cada artigo de Stories ganha um HTML próprio, com título, descrição e imagem de prévia
+// (og:image em public/og/<slug>.jpg) para o link aparecer certo no LinkedIn e afins
+function storyPreviews() {
+  const SITE = 'https://lworks.vercel.app';
+  const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const cut = (s, n) => (s.length > n ? s.slice(0, s.lastIndexOf(' ', n)) + '…' : s);
+
+  return {
+    name: 'lworks-story-previews',
+    apply: 'build',
+    async closeBundle() {
+      const fs = await import('node:fs/promises');
+      const { pathToFileURL } = await import('node:url');
+      const { articles } = await import(pathToFileURL(path.resolve('src/data/stories.js')).href);
+      const html = await fs.readFile(path.resolve('dist/index.html'), 'utf8');
+
+      for (const a of articles) {
+        const title = esc(`${a.title} — LWORKS®`);
+        const description = esc(cut(a.lead?.[0] ?? '', 160));
+        const page = html
+          .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
+          .replace(/(<meta name="description" content=")[^"]*/, `$1${description}`)
+          .replace(/(<meta property="og:title" content=")[^"]*/, `$1${title}`)
+          .replace(/(<meta property="og:description" content=")[^"]*/, `$1${description}`)
+          .replace(/(<meta property="og:image" content=")[^"]*/, `$1${SITE}/og/${a.slug}.jpg`)
+          .replace(/(<meta property="og:type" content=")[^"]*/, '$1article');
+        const dir = path.resolve('dist/stories', a.slug);
+        await fs.mkdir(dir, { recursive: true });
+        await fs.writeFile(path.join(dir, 'index.html'), page);
+      }
+    }
+  };
+}
+
 export default defineConfig(({ mode }) => {
   // Variáveis do .env.local (ex.: ADMIN_PASSWORD) ficam disponíveis para a API local
   Object.assign(process.env, loadEnv(mode, process.cwd(), ''));
 
   return {
-    plugins: [react(), localApi()],
+    plugins: [react(), localApi(), storyPreviews()],
     resolve: {
       alias: { '@': path.resolve(import.meta.dirname, 'src') }
     },
